@@ -7,19 +7,19 @@ const LoginPage = () => {
     <Grid container xs={12} justifyContent="center">
       <Grid item container xs={8} >
         <Grid item xs={12}>
-          name
-          <TextField
-            fullWidth
-            variant="outlined"
-            id="name"
-          />
-        </Grid>
-        <Grid item xs={12}>
           email
           <TextField
             fullWidth
             variant="outlined"
             id="email"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          password
+          <TextField
+            fullWidth
+            variant="outlined"
+            id="password"
           />
         </Grid>
         <Grid item container justifyContent="center" p={2}>
