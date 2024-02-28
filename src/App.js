@@ -1,8 +1,9 @@
-import { Button } from '@mui/material'
+import React from 'react';
+import Routing from './components/routing.tsx'
 
 function App() {
   return (
-    <div><Button variant="outlined">login</Button></div>
+    <Routing />
   );
 }
 
