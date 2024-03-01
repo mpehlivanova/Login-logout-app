@@ -3,7 +3,7 @@
     "moduleResolution": "node",
     "target": "es6",
     "module": "commonjs",
-    "lib": ["esnext"],
+    "lib": ["esnext","es2018","DOM" ],
     "jsx": "react",
     "strict": true,
     "sourceMap": true,
