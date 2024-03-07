@@ -7,6 +7,7 @@ export const request = async (user: any) => {
     client_secret: CLIENT_SECRET,
     audience: AUDIENCE,
     grant_type: 'password',
+    scope: 'openid',
     username: user.username,
     password: user.password,
   };
@@ -19,19 +20,22 @@ export const request = async (user: any) => {
     method,
     body: JSON.stringify(body),
   });
+  const result = await response.json().then((res: any) => res);
 
   if (!response.ok) {
-    new Error('fetch failed');
+    throw new Error(result.error_description);
   }
-
-  const access_token = await response
-    .json()
-    .then((res: any) => res?.access_token);
-  if (!access_token.ok) {
-    new Error('fetch failed - access_token');
-  } else {
-    window.localStorage.setItem('access_token', access_token);
+  const token: any = jwtDecode(result?.id_token);
+  const { name, email, nickname, picture } = token;
+  const userInfo = { name, email, nickname, picture };
+  const saveDataLocalStorage = [
+    { id: 'bearer', value: result.id_token },
+    { id: 'access', value: result.access_token },
+    { id: 'user', value: userInfo },
+  ];
+  if (result.id_token) {
+    saveDataLocalStorage.map(({ id, value }) => {
+      window.localStorage.setItem(`${id}`, JSON.stringify(value));
+    });
   }
-  const token = jwtDecode(access_token);
-  console.log(token);
 };
