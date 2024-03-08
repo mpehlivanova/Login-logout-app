@@ -1,8 +1,10 @@
-import { Alert, Button, Grid, TextField } from '@mui/material';
 import React, { useState } from "react";
-import { request } from '../api/auth';
+import { useNavigate } from 'react-router-dom';
+import { Alert, Button, Grid, TextField } from '@mui/material';
+import { request } from '../api/api';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
 
   const [input, setInput] = useState({
     username: "",
@@ -23,7 +25,6 @@ const LoginPage = () => {
       [name]: value,
     }));
   };
-
 
   return (
     <Grid container justifyContent="center">
@@ -59,8 +60,9 @@ const LoginPage = () => {
               <Button
                 variant="contained"
                 type="submit"
-                onClick={() => {
-                  request(input)
+                onClick={async () => {
+                  await request(input)
+                  navigate('/home')
                 }}
               >
                 login
@@ -72,4 +74,4 @@ const LoginPage = () => {
     </Grid >
   );
 }
-export default LoginPage
+export default LoginPage;

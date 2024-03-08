@@ -3,7 +3,7 @@
     "moduleResolution": "node",
     "target": "es6",
     "module": "commonjs",
-    "lib": ["esnext","es2018","DOM" ],
+    "lib": ["esnext", "es2018", "DOM"],
     "jsx": "react",
     "strict": true,
     "sourceMap": true,
@@ -16,6 +16,6 @@
     "outDir": "./dist",
     "typeRoots": ["node_modules/@types"]
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/components/api/require-auth.tsx"],
   "exclude": ["node_modues"]
 }

@@ -1,14 +1,16 @@
 import React from "react";
 import { Route, Routes } from 'react-router-dom';
-import { HomePage, FavoritePage, UserPage, LoginPage } from './pages'
+import { HomePage, FavoritePage, UserPage, LoginPage, PageNotFound } from './pages'
+import RequireAuth from './api/require-auth'
 
 const Routing = () => {
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<HomePage />} />
-      <Route path="/user/*" element={<UserPage />} />
-      <Route path="/favorite/*" element={<FavoritePage />} />
+      <Route path="*" element={<PageNotFound />} />
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/home" element={<RequireAuth><HomePage /></RequireAuth>} />
+      <Route path="/user" element={<RequireAuth><UserPage /></RequireAuth>} />
+      <Route path="/favorite/*" element={<RequireAuth><FavoritePage /></RequireAuth>} />
     </Routes>
   )
 }
