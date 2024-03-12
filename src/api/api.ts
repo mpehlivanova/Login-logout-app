@@ -1,5 +1,4 @@
-import { jwtDecode } from 'jwt-decode';
-import { AUDIENCE, CLIENT_ID, CLIENT_SECRET, saveUserDataLocalStorage } from './constants';
+import { AUDIENCE, CLIENT_ID, CLIENT_SECRET } from './constants';
 
 export const request = async (user: any) => {
   const body = {
@@ -15,27 +14,19 @@ export const request = async (user: any) => {
   const method = 'POST';
   const TOKEN_URL = 'https://dev-y4thf51u18ja0ber.eu.auth0.com/oauth/token';
 
-  const response = await fetch(TOKEN_URL, {
-    headers,
-    method,
-    body: JSON.stringify(body),
-  });
-  const result = await response.json().then((res: any) => res);
-
-  if (!response.ok) {
-    throw new Error(result.error_description);
-  }
-  const token: any = jwtDecode(result?.id_token);
-  const { name, email, nickname, picture } = token;
-  const userInfo = { name, email, nickname, picture };
-  // save data in locale storage 
-  if (result.id_token) {
-    saveUserDataLocalStorage(
-      result.id_token,
-      result.access_token,
-      userInfo
-    ).map(({ id, value }) => {
-      window.localStorage.setItem(`${id}`, JSON.stringify(value));
+  let response = null;
+  try {
+    response = await fetch(TOKEN_URL, {
+      headers,
+      method,
+      body: JSON.stringify(body),
     });
+  } catch {
+    throw new Error('error');
   }
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error_description);
+  }
+  return await response.json();
 };

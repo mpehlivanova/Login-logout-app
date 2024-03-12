@@ -12,7 +12,7 @@ export default function Header() {
       {
         pathname !== '/' && (
           <Button variant="contained" onClick={() => {
-            logoutUser(true);
+            logoutUser();
             navigate('/');
           }}>
             Logout

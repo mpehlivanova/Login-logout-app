@@ -1,4 +1,3 @@
-// this file will be move in folder layout
 import React from "react";
 import { Route, Routes } from 'react-router-dom';
 import { HomePage, FavoritePage, UserPage, LoginPage, PageNotFound } from '../pages'

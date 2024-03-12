@@ -2,24 +2,26 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Alert, Button, Grid, TextField } from '@mui/material';
 import { request } from '../api/api';
+import { saveUserDataLocalStorage } from '../auth/auth-manager';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-
+  const [errorState, setErrorState] = useState('');
   const [input, setInput] = useState({
     username: "",
     password: "",
   });
 
-  // create error state 
-
-  const handleSubmitEvent = (e: any) => {
+  const handleSubmitEvent = async (e: any) => {
     e.preventDefault();
-    if (input.username !== "" && input.password !== "") {
+    try {
+      const res = await request(input);
+      console.log(res);
+      saveUserDataLocalStorage(res);
+      navigate('/home')
+    } catch (error: any) {
+      setErrorState(error.message)
     }
-    <Alert variant="outlined" >please provide a valid input</Alert>;
-
-    // method request will be here, and delete from onclick button 
   };
 
   const handleInput = (e: any) => {
@@ -28,6 +30,7 @@ const LoginPage = () => {
       ...prev,
       [name]: value,
     }));
+    setErrorState('')
   };
 
   return (
@@ -43,6 +46,7 @@ const LoginPage = () => {
               type="username"
               name='username'
               onChange={handleInput}
+              value={input.username}
             />
           </Grid>
           <Grid item xs={12}>
@@ -54,23 +58,28 @@ const LoginPage = () => {
               id="password"
               name="password"
               onChange={handleInput}
+              value={input.password}
             />
           </Grid>
-          {/* if there is error, we will display error alert */}
+          <Grid item xs={12} m={2}>
+            {errorState && <Alert variant="filled" severity="error">{errorState}</Alert>}
+          </Grid>
           <Grid item container justifyContent="center" p={2}>
             <Grid>
-              <Button>
-                back
+              <Button onClick={() => {
+                setInput({
+                  username: "",
+                  password: "",
+                });
+                setErrorState('');
+              }
+              }>
+                clear
               </Button>
               <Button
                 variant="contained"
                 type="submit"
-                onClick={
-                  // move in handleSubmitEvent, and catch error 
-                  async () => {
-                    await request(input)
-                    navigate('/home')
-                  }}
+                disabled={!Boolean(input.username.length) || !Boolean(input.password.length)}
               >
                 login
               </Button>
