@@ -16,6 +16,6 @@
     "outDir": "./dist",
     "typeRoots": ["node_modules/@types"]
   },
-  "include": ["src/**/*.ts", "src/components/api/require-auth.tsx"],
+  "include": ["src/**/*.ts", "src/auth/require-auth.tsx"],
   "exclude": ["node_modues"]
 }

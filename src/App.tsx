@@ -1,6 +1,6 @@
 import React from 'react';
-import Routing from './components/routing.tsx'
-import Layout from './components/layout.tsx';
+import Routing from './layout/routing.tsx'
+import Layout from './layout/layout.tsx';
 
 function App() {
   return (

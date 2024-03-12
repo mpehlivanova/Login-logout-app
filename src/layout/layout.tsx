@@ -1,6 +1,7 @@
+// this file will be move in folder layout
 import React from "react";
 import { Grid } from '@mui/material';
-import Header from './api/header';
+import Header from '../components/header';
 
 function Layout({ children }) {
   return (

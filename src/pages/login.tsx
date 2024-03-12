@@ -1,0 +1,84 @@
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { Alert, Button, Grid, TextField } from '@mui/material';
+import { request } from '../api/api';
+
+const LoginPage = () => {
+  const navigate = useNavigate();
+
+  const [input, setInput] = useState({
+    username: "",
+    password: "",
+  });
+
+  // create error state 
+
+  const handleSubmitEvent = (e: any) => {
+    e.preventDefault();
+    if (input.username !== "" && input.password !== "") {
+    }
+    <Alert variant="outlined" >please provide a valid input</Alert>;
+
+    // method request will be here, and delete from onclick button 
+  };
+
+  const handleInput = (e: any) => {
+    const { name, value } = e.target;
+    setInput((prev: any) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  return (
+    <Grid container justifyContent="center">
+      <Grid item xs={8} >
+        <form onSubmit={handleSubmitEvent}>
+          <Grid item xs={12}>
+            user name or email
+            <TextField
+              fullWidth
+              variant="outlined"
+              id="username"
+              type="username"
+              name='username'
+              onChange={handleInput}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            password
+            <TextField
+              fullWidth
+              type="password"
+              variant="outlined"
+              id="password"
+              name="password"
+              onChange={handleInput}
+            />
+          </Grid>
+          {/* if there is error, we will display error alert */}
+          <Grid item container justifyContent="center" p={2}>
+            <Grid>
+              <Button>
+                back
+              </Button>
+              <Button
+                variant="contained"
+                type="submit"
+                onClick={
+                  // move in handleSubmitEvent, and catch error 
+                  async () => {
+                    await request(input)
+                    navigate('/home')
+                  }}
+              >
+                login
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Grid >
+    </Grid >
+  );
+}
+export default LoginPage;

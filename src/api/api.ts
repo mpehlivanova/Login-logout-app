@@ -1,6 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import { AUDIENCE, CLIENT_ID, CLIENT_SECRET } from '../../constants';
-import { saveUserDataLocalStorage } from './constants';
+import { AUDIENCE, CLIENT_ID, CLIENT_SECRET, saveUserDataLocalStorage } from './constants';
 
 export const request = async (user: any) => {
   const body = {
