@@ -16,7 +16,6 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const res = await request(input);
-      console.log(res);
       saveUserDataLocalStorage(res);
       navigate('/home')
     } catch (error: any) {
