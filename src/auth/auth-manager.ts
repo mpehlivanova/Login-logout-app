@@ -1,28 +1,15 @@
-import { jwtDecode } from 'jwt-decode';
-
-export const getUserData = () => {
-  // this method is not needed, because we will using context global state
-  let user: any = {};
-  if (window.localStorage.getItem('user') !== 'undefined') {
-    user = window.localStorage.getItem('user');
-  }
-  return JSON.parse(user);
-};
+import { TOKEN_TYPE } from '../enum';
 
 export const logoutUser = () => {
-  window.localStorage.removeItem('bearer');
-  window.localStorage.removeItem('access');
-  window.localStorage.removeItem('user');
+  window.localStorage.removeItem(TOKEN_TYPE.bearer);
+  window.localStorage.removeItem(TOKEN_TYPE.access);
 };
 
 export const saveUserDataLocalStorage = ({ id_token, access_token }: any) => {
-  const token: any = jwtDecode(id_token);
-  const { name, email, nickname, picture } = token;
-  const userInfo = { name, email, nickname, picture };
+  window.localStorage.setItem(TOKEN_TYPE.bearer, id_token);
+  window.localStorage.setItem(TOKEN_TYPE.access, access_token);
+};
 
-  if (token) {
-    window.localStorage.setItem('bearer', token);
-    window.localStorage.setItem('access', access_token);
-    window.localStorage.setItem('user', JSON.stringify(userInfo));
-  }
+export const getToken = (typeToken: TOKEN_TYPE) => {
+  return window.localStorage.getItem(typeToken);
 };

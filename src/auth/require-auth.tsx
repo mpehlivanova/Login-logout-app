@@ -1,13 +1,13 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const RequireAuth = ({ children }: any) => {
-  const isAuthenticated = localStorage.getItem('bearer') || '';
-  // we using context, but we will check user data - using username -> localStorage.getItem('user')
+  const { isAuthenticated } = useAuthContext();
   if (!isAuthenticated) {
     return <Navigate to="/" />;
   }
-  return children
+  return children;
 };
 
 export default RequireAuth;

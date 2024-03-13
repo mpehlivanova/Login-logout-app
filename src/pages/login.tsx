@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Alert, Button, Grid, TextField } from '@mui/material';
 import { request } from '../api/api';
 import { saveUserDataLocalStorage } from '../auth/auth-manager';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { PAGES } from '../enum';
 
 const LoginPage = () => {
+  const { isAuthenticated, setAuthenticated } = useAuthContext();
   const navigate = useNavigate();
   const [errorState, setErrorState] = useState('');
   const [input, setInput] = useState({
@@ -15,11 +18,18 @@ const LoginPage = () => {
   const handleSubmitEvent = async (e: any) => {
     e.preventDefault();
     try {
-      const res = await request(input);
-      saveUserDataLocalStorage(res);
-      navigate('/home')
+      if (!Boolean(input.username.length) || !Boolean(input.password.length)) {
+        setErrorState('Please provide valid input.');
+      } else {
+        const res = await request(input);
+        saveUserDataLocalStorage(res);
+        setAuthenticated(true);
+        navigate(`/${PAGES.home}`);
+      }
+
     } catch (error: any) {
-      setErrorState(error.message)
+      setErrorState(error.message);
+      setAuthenticated(false);
     }
   };
 
@@ -29,8 +39,12 @@ const LoginPage = () => {
       ...prev,
       [name]: value,
     }));
-    setErrorState('')
+    setErrorState('');
   };
+
+  if (isAuthenticated) {
+    return <Navigate to={`/${PAGES.home}`} />;
+  }
 
   return (
     <Grid container justifyContent="center">
@@ -78,7 +92,6 @@ const LoginPage = () => {
               <Button
                 variant="contained"
                 type="submit"
-                disabled={!Boolean(input.username.length) || !Boolean(input.password.length)}
               >
                 login
               </Button>
