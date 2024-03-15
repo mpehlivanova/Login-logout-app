@@ -4,19 +4,14 @@ import { jwtDecode } from 'jwt-decode';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { getToken } from '../auth/auth-manager';
 import { TOKEN_TYPE } from '../enum';
-
-interface User {
-  name: string,
-  email: string,
-  picture: string,
-}
+import { User } from '../types';
 
 export interface UserContextProps {
-  user?: User
+  user?: User,
 }
 
 export const UserContext = createContext<UserContextProps>({
-  user: undefined
+  user: undefined,
 });
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -45,5 +40,5 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
   );
-}
+};
 
