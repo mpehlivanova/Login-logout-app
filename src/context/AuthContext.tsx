@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { createContext, useState } from 'react';
-import { getToken, logoutUser } from '../auth/auth-manager';
+import { getToken, isValidToken, logoutUser } from '../auth/auth-manager';
 import { TOKEN_TYPE } from '../enum';
-import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
 export interface AuthContextProps {
@@ -19,25 +18,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const navigate = useNavigate();
-  const access: any = getToken(TOKEN_TYPE.access);
-  const [isAuthenticated, setAuthenticated] = useState<boolean>(Boolean(access));
-
-  const isValidToken = () => {
-    if (isAuthenticated) {
-      const { exp }: any = jwtDecode(access);
-      const expDate = new Date(exp * 1000);
-      if (expDate <= new Date()) {
-        setAuthenticated(false);
-        navigate('/');
-        logoutUser();
-      }
-    }
+  const accessToken: string = getToken(TOKEN_TYPE.access) || '';
+  const [isAuthenticated, setAuthenticated] = useState<boolean>(Boolean(accessToken));
+  
+  const validationToken = () => {
+    if (!isValidToken(accessToken)) {
+      logoutUser();
+      setAuthenticated(false);
+      navigate('/');
+    };
   };
 
   useEffect(() => {
-    document.onclick = () => isValidToken();
-    document.onscroll = () => isValidToken();
-    document.onkeydown = () => isValidToken();
+    document.onclick = () =>  validationToken();
+    document.onscroll = () => validationToken();
+    document.onkeydown = () => validationToken();
   }, [new Date()]);
 
   const contextValue = { isAuthenticated, setAuthenticated };
