@@ -3,6 +3,7 @@ import { PAGES } from './enum';
 export interface DataLocalStorageType {
   id_token: string;
   access_token: string;
+  refresh_token: string;
 }
 
 export interface User {
@@ -16,4 +17,9 @@ export interface RouteConfigurationType {
   isRequireAuth: boolean;
   url: string;
   component: React.ReactNode;
+}
+
+export interface RequestUser {
+  username: string;
+  password: string;
 }

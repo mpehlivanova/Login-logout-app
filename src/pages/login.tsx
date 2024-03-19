@@ -5,12 +5,13 @@ import { request } from '../api/api';
 import { saveUserDataLocalStorage } from '../auth/auth-manager';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { PAGES } from '../enum';
+import { RequestUser } from '../types';
 
 const LoginPage = () => {
   const { isAuthenticated, setAuthenticated } = useAuthContext();
   const navigate = useNavigate();
   const [errorState, setErrorState] = useState('');
-  const [input, setInput] = useState({
+  const [user, setUser] = useState<RequestUser>({
     username: "",
     password: "",
   });
@@ -18,10 +19,10 @@ const LoginPage = () => {
   const handleSubmitEvent = async (e: any) => {
     e.preventDefault();
     try {
-      if (!Boolean(input.username.length) || !Boolean(input.password.length)) {
+      if (!Boolean(user.username.length) || !Boolean(user.password.length)) {
         setErrorState('Please provide valid input.');
       } else {
-        const res = await request(input);
+        const res = await request({ user });
         saveUserDataLocalStorage(res);
         setAuthenticated(true);
         navigate(`/${PAGES.home}`);
@@ -35,7 +36,7 @@ const LoginPage = () => {
 
   const handleInput = (e: any) => {
     const { name, value } = e.target;
-    setInput((prev: any) => ({
+    setUser((prev: any) => ({
       ...prev,
       [name]: value,
     }));
@@ -59,7 +60,7 @@ const LoginPage = () => {
               type="username"
               name='username'
               onChange={handleInput}
-              value={input.username}
+              value={user.username}
             />
           </Grid>
           <Grid item xs={12}>
@@ -71,7 +72,7 @@ const LoginPage = () => {
               id="password"
               name="password"
               onChange={handleInput}
-              value={input.password}
+              value={user.password}
             />
           </Grid>
           <Grid item xs={12} m={2}>
@@ -80,7 +81,7 @@ const LoginPage = () => {
           <Grid item container justifyContent="center" p={2}>
             <Grid>
               <Button onClick={() => {
-                setInput({
+                setUser({
                   username: "",
                   password: "",
                 });

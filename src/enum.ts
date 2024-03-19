@@ -1,6 +1,7 @@
 export enum TOKEN_TYPE {
   bearer = 'bearer',
   access = 'access',
+  refresh = 'refresh',
 }
 
 export enum PAGES {
