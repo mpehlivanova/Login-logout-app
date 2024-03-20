@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Alert, Button, Grid, TextField } from '@mui/material';
-import { request } from '../api/api';
-import { saveUserDataLocalStorage } from '../auth/auth-manager';
+import { loginUser } from '../auth/auth-manager';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { PAGES } from '../enum';
+import { Pages, } from '../enum';
 import { RequestUser } from '../types';
 
 const LoginPage = () => {
@@ -16,16 +15,15 @@ const LoginPage = () => {
     password: "",
   });
 
-  const handleSubmitEvent = async (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
       if (!Boolean(user.username.length) || !Boolean(user.password.length)) {
         setErrorState('Please provide valid input.');
       } else {
-        const res = await request({ user });
-        saveUserDataLocalStorage(res);
+        await loginUser(user);
         setAuthenticated(true);
-        navigate(`/${PAGES.home}`);
+        navigate(`/${Pages.home}`);
       }
 
     } catch (error: any) {
@@ -44,13 +42,13 @@ const LoginPage = () => {
   };
 
   if (isAuthenticated) {
-    return <Navigate to={`/${PAGES.home}`} />;
+    return <Navigate to={`/${Pages.home}`} />;
   }
 
   return (
     <Grid container justifyContent="center">
       <Grid item xs={8} >
-        <form onSubmit={handleSubmitEvent}>
+        <form onSubmit={handleSubmit}>
           <Grid item xs={12}>
             user name or email
             <TextField

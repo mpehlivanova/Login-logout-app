@@ -1,7 +1,12 @@
 import React, { useEffect } from "react";
 import { createContext, useState } from 'react';
-import { getToken, isValidAccessToken, isRefreshUserSession } from '../auth/auth-manager';
-import { TOKEN_TYPE } from '../enum';
+import {
+  getToken,
+  isValidAccessToken,
+  refreshUserSession,
+  logoutUser
+} from '../auth/auth-manager';
+import { TokenType } from '../enum';
 import { useNavigate } from 'react-router-dom';
 
 export interface AuthContextProps {
@@ -18,14 +23,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const navigate = useNavigate();
-  const accessToken: string = getToken(TOKEN_TYPE.access) || '';
+  const accessToken: string = getToken(TokenType.access) || '';
   const [isAuthenticated, setAuthenticated] = useState<boolean>(Boolean(accessToken));
 
   const validateUserSession = async () => {
     if (!isValidAccessToken()) {
-      if (await isRefreshUserSession()) {
+      if (await refreshUserSession()) {
         setAuthenticated(true);
       } else {
+        logoutUser();
         setAuthenticated(false);
         navigate('/');
       }

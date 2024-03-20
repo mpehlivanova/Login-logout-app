@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { getToken } from '../auth/auth-manager';
-import { TOKEN_TYPE } from '../enum';
+import { TokenType } from '../enum';
 import { User } from '../types';
 
 export interface UserContextProps {
@@ -23,7 +23,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     if (isAuthenticated) {
-      const bearer: any = getToken(TOKEN_TYPE.bearer);
+      const bearer: any = getToken(TokenType.bearer);
       const { email, picture, name }: any = jwtDecode(bearer);
       setUser({
         name,

@@ -1,35 +1,35 @@
 import React from 'react';
 import { HomePage, FavoritePage, UserPage, LoginPage, PageNotFound } from '../pages'
-import { PAGES } from '../enum';
 import { RouteConfigurationType } from '../types';
+import { Pages } from '../enum';
 
 export const routeConfiguration: RouteConfigurationType[] = [
   {
-    id: PAGES.login,
+    id: Pages.login,
     isRequireAuth: false,
     url: '/',
     component: <LoginPage />,
   },
   {
-    id: PAGES.home,
+    id: Pages.home,
     isRequireAuth: true,
-    url: `/${PAGES.home}`,
+    url: `/${Pages.home}`,
     component: <HomePage />,
   },
   {
-    id: PAGES.user,
+    id: Pages.user,
     isRequireAuth: true,
-    url: `/${PAGES.user}`,
+    url: `/${Pages.user}`,
     component: <UserPage />,
   },
   {
-    id: PAGES.favorite,
+    id: Pages.favorite,
     isRequireAuth: true,
-    url: `/${PAGES.favorite}`,
+    url: `/${Pages.favorite}`,
     component: <FavoritePage />,
   },
   {
-    id: PAGES.pageNotFound,
+    id: Pages.pageNotFound,
     isRequireAuth: false,
     url: '*',
     component: <PageNotFound />,

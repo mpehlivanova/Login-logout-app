@@ -1,59 +1,62 @@
 import { jwtDecode } from 'jwt-decode';
-import { TOKEN_TYPE } from '../enum';
-import { DataLocalStorageType } from '../types';
-import { request } from '../api/api';
+import { TokenType } from '../enum';
+import {
+  AccessTokenDecodeType,
+  AuthenticationResponseType,
+  RequestUser,
+} from '../types';
+import { login, refreshSession } from '../api/api';
 
-export const logoutUser = () => {
-  Object.keys(TOKEN_TYPE).map((token) => window.localStorage.removeItem(token));
+export const logoutUser: Function = () => {
+  Object.keys(TokenType).forEach((token) =>
+    window.localStorage.removeItem(token)
+  );
 };
 
-export const saveUserDataLocalStorage = ({
+export const saveUserDataLocalStorage: Function = ({
   id_token,
   access_token,
   refresh_token,
-}: DataLocalStorageType) => {
-  window.localStorage.setItem(TOKEN_TYPE.bearer, id_token);
-  window.localStorage.setItem(TOKEN_TYPE.access, access_token);
-  window.localStorage.setItem(TOKEN_TYPE.refresh, refresh_token);
+}: AuthenticationResponseType) => {
+  if (refresh_token) {
+    window.localStorage.setItem(TokenType.refresh, refresh_token);
+  }
+  window.localStorage.setItem(TokenType.bearer, id_token);
+  window.localStorage.setItem(TokenType.access, access_token);
 };
 
-export const updateAccessToken = ({
-  id_token,
-  access_token,
-}: DataLocalStorageType) => {
-  window.localStorage.setItem(TOKEN_TYPE.bearer, id_token);
-  window.localStorage.setItem(TOKEN_TYPE.access, access_token);
-};
-
-export const getToken = (typeToken: TOKEN_TYPE) => {
+export const getToken: Function = (typeToken: TokenType) => {
   return window.localStorage.getItem(typeToken);
 };
 
-export const isValidAccessToken = () => {
-  const token = getToken(TOKEN_TYPE.access);
+export const isValidAccessToken: Function = () => {
+  const token = getToken(TokenType.access);
   if (!token) {
     return false;
   }
-  const accessTokenDecode: any = jwtDecode(token);
+  const accessTokenDecode: AccessTokenDecodeType = jwtDecode(token);
   const expDate = new Date(accessTokenDecode?.exp * 1000);
-  if (expDate <= new Date()) {
-    return false;
-  }
-  return true;
+  return expDate > new Date();
 };
 
-export const isRefreshUserSession = async () => {
+export const refreshUserSession: Function = async () => {
   try {
-    const refreshToken: any = getToken(TOKEN_TYPE.refresh);
+    const refreshToken: string | null = getToken(TokenType.refresh);
     if (refreshToken) {
-      const res = await request({ refreshToken });
-      updateAccessToken(res);
+      const res: AuthenticationResponseType = await refreshSession(
+        refreshToken
+      );
+      saveUserDataLocalStorage({ ...res });
       return true;
     }
-    logoutUser();
     return false;
   } catch (error: any) {
     alert(error.message);
     return false;
   }
+};
+
+export const loginUser = async (user: RequestUser) => {
+  const res: AuthenticationResponseType = await login({ ...user });
+  saveUserDataLocalStorage(res);
 };
