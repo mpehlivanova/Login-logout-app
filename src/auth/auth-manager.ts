@@ -1,11 +1,8 @@
 import { jwtDecode } from 'jwt-decode';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { msalConfig } from '../api/constants';
 import { TokenType } from '../enum';
-import {
-  AccessTokenDecodeType,
-  AuthenticationResponseType,
-  RequestUser,
-} from '../types';
-import { login, refreshSession } from '../api/api';
+import { AccessTokenDecodeType, AuthenticationResponseType } from '../types';
 
 export const logoutUser: Function = () => {
   Object.keys(TokenType).forEach((token) =>
@@ -14,49 +11,48 @@ export const logoutUser: Function = () => {
 };
 
 export const saveUserDataLocalStorage: Function = ({
-  id_token,
-  access_token,
-  refresh_token,
+  idToken,
+  accessToken,
 }: AuthenticationResponseType) => {
-  if (refresh_token) {
-    window.localStorage.setItem(TokenType.refresh, refresh_token);
-  }
-  window.localStorage.setItem(TokenType.bearer, id_token);
-  window.localStorage.setItem(TokenType.access, access_token);
+  window.localStorage.setItem(TokenType.idToken, idToken);
+  window.localStorage.setItem(TokenType.accessToken, accessToken);
 };
 
-export const getToken: Function = (typeToken: TokenType) => {
-  return window.localStorage.getItem(typeToken);
+export const getToken: Function = (tokenType: TokenType) => {
+  return window.localStorage.getItem(tokenType);
 };
 
 export const isValidAccessToken: Function = () => {
-  const token = getToken(TokenType.access);
-  if (!token) {
+  const accessToken: any = getToken(TokenType.accessToken);
+  if (!accessToken) {
     return false;
   }
-  const accessTokenDecode: AccessTokenDecodeType = jwtDecode(token);
+  const accessTokenDecode: AccessTokenDecodeType = jwtDecode(accessToken);
   const expDate = new Date(accessTokenDecode?.exp * 1000);
   return expDate > new Date();
 };
 
 export const refreshUserSession: Function = async () => {
-  try {
-    const refreshToken: string | null = getToken(TokenType.refresh);
-    if (refreshToken) {
-      const res: AuthenticationResponseType = await refreshSession(
-        refreshToken
-      );
-      saveUserDataLocalStorage({ ...res });
-      return true;
-    }
-    return false;
-  } catch (error: any) {
-    alert(error.message);
-    return false;
-  }
+  // TODO: this method will be change
+  // try {
+  //   const { refreshToken }: any = getTokens();
+  //   if (refreshToken) {
+  //     const res: AuthenticationResponseType = await refreshSession(
+  //       refreshToken
+  //     );
+  //     saveUserDataLocalStorage({ ...res });
+  //     return true;
+  //   }
+  //   return false;
+  // } catch (error: any) {
+  //   alert(error.message);
+  //   return false;
+  // }
 };
 
-export const loginUser = async (user: RequestUser) => {
-  const res: AuthenticationResponseType = await login({ ...user });
-  saveUserDataLocalStorage(res);
+export const loginUser = async () => {
+  const msalInstance =
+    await PublicClientApplication.createPublicClientApplication(msalConfig);
+  const result = await msalInstance.loginPopup();
+  saveUserDataLocalStorage(result);
 };

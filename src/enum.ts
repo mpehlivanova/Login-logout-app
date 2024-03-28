@@ -1,7 +1,6 @@
 export enum TokenType {
-  bearer = 'bearer',
-  access = 'access',
-  refresh = 'refresh',
+  accessToken = 'accessToken',
+  idToken = 'idToken',
 }
 
 export enum Pages {
@@ -10,9 +9,4 @@ export enum Pages {
   user = 'user',
   pageNotFound = 'page-not-found',
   login = 'login',
-}
-
-export enum GrantType {
-  password = 'password',
-  refresh_token = 'refresh_token',
 }

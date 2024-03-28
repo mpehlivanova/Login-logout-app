@@ -1,43 +1,28 @@
-import { GrantType } from '../enum';
-import { MethodType, RequestBody, RequestUser } from '../types';
-import {
-  AUDIENCE,
-  BASE_URL,
-  CLIENT_ID,
-  CLIENT_SECRET,
-  HEADERS as headers,
-  SCOPE,
-} from './constants';
-
-export const login = async (user: RequestUser) =>
-  await request(`${BASE_URL}/oauth/token`, 'POST', {
-    ...user,
-    grant_type: GrantType.password,
-  });
-
-export const refreshSession = async (refreshToken: string) =>
-  await request(`${BASE_URL}/oauth/token`, 'POST', {
-    refresh_token: refreshToken,
-    grant_type: GrantType.refresh_token,
-  });
+import { getToken } from '../auth/auth-manager';
+import { TokenType } from '../enum';
+import { MethodType } from '../types';
+import { HEADERS } from './constants';
 
 export const request = async (
   endpoint: string,
   method: MethodType,
-  body?: any
+  body?: any,
+  authorization?: boolean
 ) => {
-  const bodyBase: RequestBody = {
-    client_id: CLIENT_ID,
-    client_secret: CLIENT_SECRET,
-    audience: AUDIENCE,
-    scope: SCOPE,
+  const headers = {
+    ...HEADERS,
+    ...(authorization
+      ? {
+          Authorization: `Bearer ${getToken(TokenType.accessToken)}`,
+        }
+      : {}),
   };
   let response = null;
   try {
     response = await fetch(`${endpoint}`, {
       headers,
       method,
-      body: JSON.stringify(body ? { ...bodyBase, ...body } : bodyBase),
+      body: JSON.stringify(body),
     });
   } catch {
     throw new Error('error response');
