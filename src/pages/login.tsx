@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Button, Grid } from '@mui/material';
-import { loginUser } from '../auth/auth-manager';
+import { authManager } from '../App'
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Pages } from '../enum';
 
@@ -13,7 +13,7 @@ const LoginPage = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      await loginUser()
+      await authManager.login();
       setAuthenticated(true);
       navigate(`/${Pages.home}`);
     } catch (error: any) {

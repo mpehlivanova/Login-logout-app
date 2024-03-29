@@ -20,13 +20,18 @@ export type AuthenticationResponseType = {
   idToken: string;
 };
 
-export type AccessTokenDecodeType = {
-  aud: string[];
-  azp: string;
-  exp: number;
-  gty: string;
-  iat: number;
+export type tokenDecodeType = {
+  nickname: string;
+  name: string;
+  picture: string;
+  updated_at: string;
+  email: string;
+  email_verified: boolean;
   iss: string;
-  scope: string;
+  aud: string;
+  iat: number;
+  exp: number;
   sub: string;
+  sid: string;
+  nonce: string;
 };

@@ -1,58 +1,80 @@
-import { jwtDecode } from 'jwt-decode';
 import { PublicClientApplication } from '@azure/msal-browser';
+import { jwtDecode } from 'jwt-decode';
 import { msalConfig } from '../api/constants';
 import { TokenType } from '../enum';
-import { AccessTokenDecodeType, AuthenticationResponseType } from '../types';
+import { tokenDecodeType, AuthenticationResponseType } from '../types';
 
-export const logoutUser: Function = () => {
-  Object.keys(TokenType).forEach((token) =>
-    window.localStorage.removeItem(token)
-  );
-};
+export const AuthManager = () => {
+  let msalInst: PublicClientApplication | null = null;
 
-export const saveUserDataLocalStorage: Function = ({
-  idToken,
-  accessToken,
-}: AuthenticationResponseType) => {
-  window.localStorage.setItem(TokenType.idToken, idToken);
-  window.localStorage.setItem(TokenType.accessToken, accessToken);
-};
+  const saveUserDataLocalStorage: Function = ({
+    idToken,
+    accessToken,
+  }: AuthenticationResponseType) => {
+    window.localStorage.setItem(TokenType.idToken, idToken);
+    window.localStorage.setItem(TokenType.accessToken, accessToken);
+  };
 
-export const getToken: Function = (tokenType: TokenType) => {
-  return window.localStorage.getItem(tokenType);
-};
+  const getAccessToken: Function = () => {
+    return window.localStorage.getItem(TokenType.accessToken);
+  };
 
-export const isValidAccessToken: Function = () => {
-  const accessToken: any = getToken(TokenType.accessToken);
-  if (!accessToken) {
-    return false;
-  }
-  const accessTokenDecode: AccessTokenDecodeType = jwtDecode(accessToken);
-  const expDate = new Date(accessTokenDecode?.exp * 1000);
-  return expDate > new Date();
-};
+  const getIdToken: Function = () => {
+    return window.localStorage.getItem(TokenType.idToken);
+  };
 
-export const refreshUserSession: Function = async () => {
-  // TODO: this method will be change
-  // try {
-  //   const { refreshToken }: any = getTokens();
-  //   if (refreshToken) {
-  //     const res: AuthenticationResponseType = await refreshSession(
-  //       refreshToken
-  //     );
-  //     saveUserDataLocalStorage({ ...res });
-  //     return true;
-  //   }
-  //   return false;
-  // } catch (error: any) {
-  //   alert(error.message);
-  //   return false;
-  // }
-};
+  const isValidToken: Function = () => {
+    const idToken: any = getIdToken();
+    if (!idToken) {
+      return false;
+    }
+    const idTokenDecode: tokenDecodeType = jwtDecode(idToken);
+    const expDate = new Date(idTokenDecode?.exp * 1000);
+    return expDate > new Date();
+  };
 
-export const loginUser = async () => {
-  const msalInstance =
-    await PublicClientApplication.createPublicClientApplication(msalConfig);
-  const result = await msalInstance.loginPopup();
-  saveUserDataLocalStorage(result);
+  const loginUser = async () => {
+    const result = await msalInst?.loginPopup();
+    saveUserDataLocalStorage(result);
+  };
+
+  const logoutUser: Function = () => {
+    Object.keys(TokenType).forEach((token) =>
+      window.localStorage.removeItem(token)
+    );
+  };
+
+  const refreshUserSession: Function = async () => {
+    // TODO: this method will be change
+    // try {
+    //   const { refreshToken }: any = getTokens();
+    //   if (refreshToken) {
+    //     const res: AuthenticationResponseType = await refreshSession(
+    //       refreshToken
+    //     );
+    //     saveUserDataLocalStorage({ ...res });
+    //     return true;
+    //   }
+    //   return false;
+    // } catch (error: any) {
+    //   alert(error.message);
+    //   return false;
+    // }
+  };
+
+  return {
+    init: async () => {
+      const msalInstance = new PublicClientApplication(msalConfig);
+      await msalInstance.initialize();
+      msalInst = msalInstance;
+    },
+    logout: () => logoutUser(),
+    login: () => loginUser(),
+    getToken: {
+      accessToken: () => getAccessToken(),
+      idToken: () => getIdToken(),
+    },
+    isValidToken: () => isValidToken(),
+    refreshUserSession: () => refreshUserSession(),
+  };
 };

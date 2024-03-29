@@ -1,5 +1,4 @@
-import { getToken } from '../auth/auth-manager';
-import { TokenType } from '../enum';
+import { authManager } from '../App';
 import { MethodType } from '../types';
 import { HEADERS } from './constants';
 
@@ -13,7 +12,7 @@ export const request = async (
     ...HEADERS,
     ...(authorization
       ? {
-          Authorization: `Bearer ${getToken(TokenType.accessToken)}`,
+          Authorization: `Bearer ${authManager.getToken.accessToken()}`,
         }
       : {}),
   };

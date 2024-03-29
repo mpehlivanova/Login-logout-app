@@ -1,10 +1,9 @@
 import React from "react";
 import { createContext, useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import { authManager } from '../App';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { getToken } from '../auth/auth-manager';
 import { User } from '../types';
-import { TokenType } from '../enum';
 
 export interface UserContextProps {
   user?: User,
@@ -23,7 +22,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     if (isAuthenticated) {
-      const idToken: any = getToken(TokenType.idToken)
+      const idToken: any = authManager.getToken.idToken() || "";
       const { picture, name }: any = jwtDecode(idToken);
       setUser({
         name,
