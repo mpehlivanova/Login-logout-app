@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navigate, useNavigate } from 'react-router-dom';
-import { Button, Grid } from '@mui/material';
+import { Alert, Button, Grid } from '@mui/material';
 import { authManager } from '../App'
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Pages } from '../enum';
@@ -8,6 +8,7 @@ import { Pages } from '../enum';
 
 const LoginPage = () => {
   const { isAuthenticated, setAuthenticated } = useAuthContext();
+  const [error, setError] = useState<string>('')
   const navigate = useNavigate();
 
   const handleSubmit = async (e: any) => {
@@ -18,6 +19,7 @@ const LoginPage = () => {
       navigate(`/${Pages.home}`);
     } catch (error: any) {
       setAuthenticated(false);
+      setError(error.message);
     }
   };
 
@@ -36,6 +38,7 @@ const LoginPage = () => {
           login
         </Button>
       </Grid>
+      {error && <Alert severity='error'>{error}</Alert>}
     </Grid >
   );
 }

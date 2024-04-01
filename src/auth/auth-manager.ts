@@ -1,4 +1,8 @@
-import { PublicClientApplication } from '@azure/msal-browser';
+import {
+  AccountInfo,
+  InteractionRequiredAuthError,
+  PublicClientApplication,
+} from '@azure/msal-browser';
 import { jwtDecode } from 'jwt-decode';
 import { msalConfig } from '../api/constants';
 import { TokenType } from '../enum';
@@ -6,6 +10,9 @@ import { tokenDecodeType, AuthenticationResponseType } from '../types';
 
 export const AuthManager = () => {
   let msalInst: PublicClientApplication | null = null;
+  const getAllAccounts: () => any = () => {
+    return msalInst?.getAllAccounts() || undefined;
+  };
 
   const saveUserDataLocalStorage: Function = ({
     idToken,
@@ -45,28 +52,31 @@ export const AuthManager = () => {
   };
 
   const refreshUserSession: Function = async () => {
-    // TODO: this method will be change
-    // try {
-    //   const { refreshToken }: any = getTokens();
-    //   if (refreshToken) {
-    //     const res: AuthenticationResponseType = await refreshSession(
-    //       refreshToken
-    //     );
-    //     saveUserDataLocalStorage({ ...res });
-    //     return true;
-    //   }
-    //   return false;
-    // } catch (error: any) {
-    //   alert(error.message);
-    //   return false;
-    // }
+    const currentAccount: AccountInfo | undefined = getAllAccounts()[0];
+    const request = {
+      scopes: ['Mail.Read'],
+      account: currentAccount,
+      forceRefresh: true,
+    };
+    if (currentAccount) {
+      const refreshSession = await msalInst
+        ?.acquireTokenSilent(request)
+        .catch(async (error: any) => {
+          if (error instanceof InteractionRequiredAuthError) {
+            await msalInst?.acquireTokenRedirect(request);
+          }
+        });
+      saveUserDataLocalStorage(refreshSession);
+      return true;
+    }
+    return false;
   };
 
   return {
     init: async () => {
       const msalInstance = new PublicClientApplication(msalConfig);
-      await msalInstance.initialize();
       msalInst = msalInstance;
+      await msalInst.initialize();
     },
     logout: () => logoutUser(),
     login: () => loginUser(),
