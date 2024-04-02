@@ -58,16 +58,19 @@ export const AuthManager = () => {
       account: currentAccount,
       forceRefresh: true,
     };
-    if (currentAccount) {
-      const refreshSession = await msalInst
-        ?.acquireTokenSilent(request)
-        .catch(async (error: any) => {
-          if (error instanceof InteractionRequiredAuthError) {
-            await msalInst?.acquireTokenRedirect(request);
-          }
-        });
-      saveUserDataLocalStorage(refreshSession);
-      return true;
+    if (getIdToken()) {
+      if (currentAccount) {
+        const refreshSession = await msalInst
+          ?.acquireTokenSilent(request)
+          .catch(async (error: any) => {
+            if (error instanceof InteractionRequiredAuthError) {
+              await msalInst?.acquireTokenRedirect(request);
+            }
+          });
+        saveUserDataLocalStorage(refreshSession);
+        return true;
+      }
+      return false;
     }
     return false;
   };
