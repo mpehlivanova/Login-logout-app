@@ -11,21 +11,9 @@ import { tokenDecodeType, AuthenticationResponseType } from '../types';
 export const AuthManager = () => {
   let msalInst: PublicClientApplication | null = null;
 
-  const currentAccount: () => AccountInfo | undefined = () => {
-    const allAccounts: AccountInfo[] | undefined =
-      msalInst?.getAllAccounts() || undefined;
-    if (allAccounts?.length) {
-      return allAccounts[0];
-    }
-    return undefined;
-  };
-
-  const saveUserDataLocalStorage: Function = ({
-    idToken,
-    accessToken,
-  }: AuthenticationResponseType) => {
-    window.localStorage.setItem(TokenType.idToken, idToken);
-    window.localStorage.setItem(TokenType.accessToken, accessToken);
+  const saveUserDataLocalStorage: Function = (token: AuthenticationResponseType) => {
+    window.localStorage.setItem(TokenType.idToken, token?.idToken);
+    window.localStorage.setItem(TokenType.accessToken, token?.accessToken);
   };
 
   const getAccessToken: Function = () => {
@@ -42,7 +30,9 @@ export const AuthManager = () => {
   };
 
   const logoutUser: Function = async () => {
-    await msalInst?.logoutPopup({ account: currentAccount() });
+    const currentAccount: AccountInfo | undefined =
+      msalInst?.getAllAccounts()[0];
+    await msalInst?.logoutPopup({ account: currentAccount });
 
     Object.keys(TokenType).forEach((token) =>
       window.localStorage.removeItem(token)
@@ -50,7 +40,7 @@ export const AuthManager = () => {
   };
 
   const isValidToken: Function = () => {
-    const idToken: any = getIdToken();
+    const idToken: any = getIdToken() || '';
     if (!idToken) {
       return false;
     }
@@ -60,26 +50,22 @@ export const AuthManager = () => {
   };
 
   const refreshUserSession: Function = async () => {
-    if (getIdToken()) {
-      const request = {
-        scopes: ['Mail.Read'],
-        account: currentAccount(),
-        forceRefresh: true,
-      };
-      if (currentAccount()) {
-        const refreshSession = await msalInst
-          ?.acquireTokenSilent(request)
-          .catch(async (error: any) => {
-            if (error instanceof InteractionRequiredAuthError) {
-              await msalInst?.acquireTokenRedirect(request);
-            }
-          });
-        saveUserDataLocalStorage(refreshSession);
-        return true;
-      }
-      return false;
-    }
-    return false;
+    const currentAccount: AccountInfo | undefined =
+      await msalInst?.getAllAccounts()[0];
+    const request = {
+      scopes: ['Mail.Read'],
+      account: currentAccount,
+      forceRefresh: true,
+    };
+    const refreshSession = await msalInst
+      ?.acquireTokenSilent(request)
+      .catch(async (error: any) => {
+        if (error instanceof InteractionRequiredAuthError) {
+          await msalInst?.acquireTokenRedirect(request);
+        }
+      });
+    saveUserDataLocalStorage(refreshSession);
+    return true;
   };
 
   return {

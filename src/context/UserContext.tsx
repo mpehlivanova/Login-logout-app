@@ -23,10 +23,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (isAuthenticated) {
       const idToken: any = authManager.getToken.idToken() || "";
-      const { picture, name }: any = jwtDecode(idToken);
+      const { picture, name, email }: any = jwtDecode(idToken);
       setUser({
         name,
-        email: name || "",
+        email,
         picture,
       });
     } else {
