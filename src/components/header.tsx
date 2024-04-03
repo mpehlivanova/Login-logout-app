@@ -11,8 +11,8 @@ export default function Header() {
   return (
     <Grid item container display="flex" justifyContent="flex-end">
       {isAuthenticated && (
-        <Button variant="contained" onClick={() => {
-          authManager.logout();
+        <Button variant="contained" onClick={async () => {
+          await authManager.logout();
           setAuthenticated(false);
           navigate('/');
         }}>

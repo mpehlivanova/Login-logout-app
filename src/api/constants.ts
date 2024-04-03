@@ -11,6 +11,7 @@ export const msalConfig: Configuration = {
     clientId: CLIENT_ID,
     authority: BASE_URL,
     redirectUri: 'http://localhost:3000/home',
+    postLogoutRedirectUri: 'http://localhost:3000/',
     OIDCOptions: {
       serverResponseType: 'query',
       defaultScopes: SCOPE,

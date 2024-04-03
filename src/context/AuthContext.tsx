@@ -21,11 +21,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isAuthenticated, setAuthenticated] = useState<boolean>(Boolean(accessToken));
 
   const validateUserSession = async () => {
-    if (!authManager.isValidToken()) {
+    if (isAuthenticated && !authManager.isValidToken()) {
       if (await authManager.refreshUserSession()) {
         setAuthenticated(true);
       } else {
-        authManager.logout();
+        await authManager.logout();
         setAuthenticated(false);
         navigate('/');
       }
@@ -36,7 +36,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     document.onclick = () => validateUserSession();
     document.onscroll = () => validateUserSession();
     document.onkeydown = () => validateUserSession();
-  }, [new Date()]);
+  }, []);
 
   const contextValue = { isAuthenticated, setAuthenticated };
 
