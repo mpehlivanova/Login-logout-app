@@ -6,13 +6,13 @@ export const request = async (
   endpoint: string,
   method: MethodType,
   body?: any,
-  authorization?: boolean
+  authorization = true
 ) => {
   const headers = {
     ...HEADERS,
     ...(authorization
       ? {
-          Authorization: `Bearer ${authManager.getToken.accessToken()}`,
+          Authorization: `Bearer ${authManager.getAccessToken()}`,
         }
       : {}),
   };

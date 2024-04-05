@@ -1,26 +1,24 @@
 import { Configuration, ProtocolMode } from '@azure/msal-browser';
+import { CLIENT_ID, AUTHORITY, BASE_URL } from '../constants';
 
-export const CLIENT_ID = '7RswiAboRELefuFhVK9RRhaWloTr0VNq';
-export const AUDIENCE = 'https://dev-y4thf51u18ja0ber.eu.auth0.com/api/v2/';
-export const SCOPE = ['openid', 'offline_access', 'email'];
+export const SCOPES = ['openid', 'offline_access', 'email'];
 export const HEADERS = { 'content-type': 'application/json' };
-export const BASE_URL = 'https://dev-y4thf51u18ja0ber.eu.auth0.com';
 
 export const msalConfig: Configuration = {
   auth: {
     clientId: CLIENT_ID,
-    authority: BASE_URL,
-    redirectUri: 'http://localhost:3000/home',
-    postLogoutRedirectUri: 'http://localhost:3000/',
+    authority: AUTHORITY,
+    redirectUri: `${BASE_URL}/home`,
+    postLogoutRedirectUri: BASE_URL,
     OIDCOptions: {
       serverResponseType: 'query',
-      defaultScopes: SCOPE,
+      defaultScopes: SCOPES,
     },
     protocolMode: ProtocolMode.OIDC,
-    knownAuthorities: [BASE_URL],
+    knownAuthorities: [AUTHORITY],
   },
   cache: {
-    cacheLocation: 'localStorage',
+    cacheLocation: 'sessionStorage',
     storeAuthStateInCookie: true,
   },
 };

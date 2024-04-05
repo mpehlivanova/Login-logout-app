@@ -1,3 +1,4 @@
+import { IdTokenClaims } from '@azure/msal-browser';
 import { Pages } from './enum';
 
 export interface User {
@@ -20,18 +21,6 @@ export type AuthenticationResponseType = {
   idToken: string;
 };
 
-export type tokenDecodeType = {
-  nickname: string;
-  name: string;
-  picture: string;
-  updated_at: string;
-  email: string;
-  email_verified: boolean;
-  iss: string;
-  aud: string;
-  iat: number;
-  exp: number;
-  sub: string;
-  sid: string;
-  nonce: string;
+export type IdTokenClaimsType = IdTokenClaims & {
+  [key: string]: string | number | string[] | object | undefined | unknown;
 };

@@ -14,7 +14,7 @@ const LoginPage = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      await authManager.login();
+      await authManager.loginUser();
       setAuthenticated(true);
       navigate(`/${Pages.home}`);
     } catch (error: any) {

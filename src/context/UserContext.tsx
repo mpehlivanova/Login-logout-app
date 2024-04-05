@@ -1,6 +1,5 @@
 import React from "react";
 import { createContext, useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
 import { authManager } from '../App';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { User } from '../types';
@@ -16,19 +15,13 @@ export const UserContext = createContext<UserContextProps>({
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-
   const { isAuthenticated } = useAuthContext();
   const [user, setUser] = useState<User | undefined>(undefined);
+  const currentUser = authManager.getLoggedUser();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      const idToken: any = authManager.getToken.idToken() || "";
-      const { picture, name, email }: any = jwtDecode(idToken);
-      setUser({
-        name,
-        email,
-        picture,
-      });
+    if (isAuthenticated && currentUser) {
+      setUser({ ...currentUser });
     } else {
       setUser(undefined);
     }

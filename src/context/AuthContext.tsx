@@ -17,15 +17,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const navigate = useNavigate();
-  const accessToken: string = authManager.getToken.accessToken() || '';
+  const accessToken: string = authManager.getAccessToken() || '';
   const [isAuthenticated, setAuthenticated] = useState<boolean>(Boolean(accessToken));
 
   const validateUserSession = async () => {
-    if (isAuthenticated && !authManager.isValidToken()) {
+    if (isAuthenticated && !authManager.isValidIdToken()) {
       if (await authManager.refreshUserSession()) {
         setAuthenticated(true);
       } else {
-        await authManager.logout();
+        await authManager.logoutUser();
         setAuthenticated(false);
         navigate('/');
       }

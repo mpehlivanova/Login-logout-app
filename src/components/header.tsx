@@ -12,14 +12,13 @@ export default function Header() {
     <Grid item container display="flex" justifyContent="flex-end">
       {isAuthenticated && (
         <Button variant="contained" onClick={async () => {
-          await authManager.logout();
+          await authManager.logoutUser();
           setAuthenticated(false);
           navigate('/');
         }}>
           Logout
         </Button>
       )}
-
     </Grid>
   )
 }

@@ -6,8 +6,7 @@ import { UserProvider } from './context/UserContext';
 import { AuthManager } from './auth/auth-manager';
 
 export const authManager = AuthManager();
-// we create one instance and use it from here
-authManager.init();
+authManager.init()
 
 function App() {
   return (

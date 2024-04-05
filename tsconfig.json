@@ -19,7 +19,8 @@
   "include": [
     "src/**/*.ts",
     "src/auth/require-auth.tsx",
-    "src/context/AuthContext.tsx"
+    "src/context/AuthContext.tsx",
+    "src/constants.ts"
   ],
   "exclude": ["node_modues"]
 }
