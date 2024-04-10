@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
 import { Button, Grid } from '@mui/material';
-import { logoutUser } from '../auth/auth-manager'
 import { useAuthContext } from '../hooks/useAuthContext';
+import { authManager } from '../App';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -11,15 +11,14 @@ export default function Header() {
   return (
     <Grid item container display="flex" justifyContent="flex-end">
       {isAuthenticated && (
-        <Button variant="contained" onClick={() => {
-          logoutUser();
+        <Button variant="contained" onClick={async () => {
+          await authManager.logoutUser();
           setAuthenticated(false);
           navigate('/');
         }}>
           Logout
         </Button>
       )}
-
     </Grid>
   )
 }

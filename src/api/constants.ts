@@ -1,7 +1,24 @@
-export const CLIENT_ID = 'JpwJuEhdlzYrH6FO3kW6QVP8GTr0cVr9';
-export const CLIENT_SECRET =
-  'rctURI8w_fRJe73DPqaI8ASCAbJGCd18p8QsU9nkNpU1_CTadZUzsWzD79YtovLO';
-export const AUDIENCE = 'https://dev-y4thf51u18ja0ber.eu.auth0.com/api/v2/';
-export const SCOPE = 'openid offline_access';
+import { Configuration, ProtocolMode } from '@azure/msal-browser';
+import { CLIENT_ID, AUTHORITY, BASE_URL } from '../constants';
+
+export const SCOPES = ['openid', 'offline_access', 'email'];
 export const HEADERS = { 'content-type': 'application/json' };
-export const BASE_URL = 'https://dev-y4thf51u18ja0ber.eu.auth0.com';
+
+export const msalConfig: Configuration = {
+  auth: {
+    clientId: CLIENT_ID,
+    authority: AUTHORITY,
+    redirectUri: `${BASE_URL}/home`,
+    postLogoutRedirectUri: BASE_URL,
+    OIDCOptions: {
+      serverResponseType: 'query',
+      defaultScopes: SCOPES,
+    },
+    protocolMode: ProtocolMode.OIDC,
+    knownAuthorities: [AUTHORITY],
+  },
+  cache: {
+    cacheLocation: 'sessionStorage',
+    storeAuthStateInCookie: true,
+  },
+};

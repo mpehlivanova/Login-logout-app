@@ -1,9 +1,7 @@
 import React from "react";
 import { createContext, useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import { authManager } from '../App';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { getToken } from '../auth/auth-manager';
-import { TokenType } from '../enum';
 import { User } from '../types';
 
 export interface UserContextProps {
@@ -17,19 +15,13 @@ export const UserContext = createContext<UserContextProps>({
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-
   const { isAuthenticated } = useAuthContext();
   const [user, setUser] = useState<User | undefined>(undefined);
+  const currentUser = authManager.getLoggedUser();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      const bearer: any = getToken(TokenType.bearer);
-      const { email, picture, name }: any = jwtDecode(bearer);
-      setUser({
-        name,
-        email,
-        picture,
-      });
+    if (isAuthenticated && currentUser) {
+      setUser({ ...currentUser });
     } else {
       setUser(undefined);
     }

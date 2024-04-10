@@ -1,62 +1,104 @@
-import { jwtDecode } from 'jwt-decode';
-import { TokenType } from '../enum';
 import {
-  AccessTokenDecodeType,
-  AuthenticationResponseType,
-  RequestUser,
-} from '../types';
-import { login, refreshSession } from '../api/api';
+  AccountInfo,
+  AuthenticationResult,
+  InteractionRequiredAuthError,
+  PublicClientApplication,
+} from '@azure/msal-browser';
+import { msalConfig, SCOPES } from '../api/constants';
+import { TokenType } from '../enum';
+import { AuthenticationResponseType, IdTokenClaimsType } from '../types';
 
-export const logoutUser: Function = () => {
-  Object.keys(TokenType).forEach((token) =>
-    window.localStorage.removeItem(token)
-  );
-};
+export const AuthManager = () => {
+  let msalInst: PublicClientApplication | null = null;
 
-export const saveUserDataLocalStorage: Function = ({
-  id_token,
-  access_token,
-  refresh_token,
-}: AuthenticationResponseType) => {
-  if (refresh_token) {
-    window.localStorage.setItem(TokenType.refresh, refresh_token);
-  }
-  window.localStorage.setItem(TokenType.bearer, id_token);
-  window.localStorage.setItem(TokenType.access, access_token);
-};
+  const init: Function = async () => {
+    msalInst = new PublicClientApplication(msalConfig);
+    await msalInst.initialize();
+  };
 
-export const getToken: Function = (typeToken: TokenType) => {
-  return window.localStorage.getItem(typeToken);
-};
+  const saveUserDataSessionStorage: Function = (
+    token: AuthenticationResponseType
+  ) => {
+    window.sessionStorage.setItem(TokenType.idToken, token?.idToken);
+    window.sessionStorage.setItem(TokenType.accessToken, token?.accessToken);
+  };
 
-export const isValidAccessToken: Function = () => {
-  const token = getToken(TokenType.access);
-  if (!token) {
-    return false;
-  }
-  const accessTokenDecode: AccessTokenDecodeType = jwtDecode(token);
-  const expDate = new Date(accessTokenDecode?.exp * 1000);
-  return expDate > new Date();
-};
+  const getAccessToken: Function = () => {
+    return window.sessionStorage.getItem(TokenType.accessToken);
+  };
 
-export const refreshUserSession: Function = async () => {
-  try {
-    const refreshToken: string | null = getToken(TokenType.refresh);
-    if (refreshToken) {
-      const res: AuthenticationResponseType = await refreshSession(
-        refreshToken
-      );
-      saveUserDataLocalStorage({ ...res });
-      return true;
+  const getIdToken: Function = () => {
+    return window.sessionStorage.getItem(TokenType.idToken);
+  };
+
+  const loginUser: Function = async () => {
+    const result: AuthenticationResult | undefined =
+      await msalInst?.loginPopup();
+    saveUserDataSessionStorage(result);
+    await msalInst?.setActiveAccount(result?.account || null);
+  };
+
+  const logoutUser: Function = async () => {
+    await msalInst?.logoutPopup({ account: msalInst?.getActiveAccount() });
+
+    Object.keys(TokenType).forEach((token) =>
+      window.sessionStorage.removeItem(token)
+    );
+  };
+
+  const isValidIdToken: () => boolean = () => {
+    const { idTokenClaims }: any = msalInst?.getActiveAccount() || null;
+
+    if (idTokenClaims) {
+      const expDate = new Date(idTokenClaims?.exp * 1000);
+      return expDate > new Date();
     }
     return false;
-  } catch (error: any) {
-    alert(error.message);
-    return false;
-  }
-};
+  };
 
-export const loginUser = async (user: RequestUser) => {
-  const res: AuthenticationResponseType = await login({ ...user });
-  saveUserDataLocalStorage(res);
+  const refreshUserSession: Function = async () => {
+    const request = {
+      scopes: SCOPES,
+      account: (await msalInst?.getActiveAccount()) || undefined,
+      forceRefresh: true,
+    };
+
+    try {
+      const refreshSession = await msalInst
+        ?.acquireTokenSilent(request)
+        .catch(async (error: any) => {
+          if (error instanceof InteractionRequiredAuthError) {
+            await msalInst?.acquireTokenRedirect(request);
+          }
+        });
+      if (!refreshSession) {
+        return false;
+      }
+      saveUserDataSessionStorage(refreshSession);
+      return true;
+    } catch (error) {
+      new Error('failed refresh session request');
+    }
+  };
+
+  const getLoggedUser: Function = () => {
+    const account: AccountInfo | null = msalInst?.getActiveAccount() || null;
+    if (account) {
+      const { name, email, picture }: IdTokenClaimsType | any =
+        account?.idTokenClaims;
+      return { name, email, picture };
+    }
+    return undefined;
+  };
+
+  return {
+    init,
+    logoutUser,
+    loginUser,
+    getAccessToken,
+    getIdToken,
+    isValidIdToken,
+    refreshUserSession,
+    getLoggedUser,
+  };
 };

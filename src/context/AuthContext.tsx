@@ -1,13 +1,7 @@
 import React, { useEffect } from "react";
 import { createContext, useState } from 'react';
-import {
-  getToken,
-  isValidAccessToken,
-  refreshUserSession,
-  logoutUser
-} from '../auth/auth-manager';
-import { TokenType } from '../enum';
 import { useNavigate } from 'react-router-dom';
+import { authManager } from '../App';
 
 export interface AuthContextProps {
   isAuthenticated: boolean;
@@ -23,15 +17,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const navigate = useNavigate();
-  const accessToken: string = getToken(TokenType.access) || '';
+  const accessToken: string = authManager.getAccessToken() || '';
   const [isAuthenticated, setAuthenticated] = useState<boolean>(Boolean(accessToken));
 
   const validateUserSession = async () => {
-    if (!isValidAccessToken()) {
-      if (await refreshUserSession()) {
+    if (isAuthenticated && !authManager.isValidIdToken()) {
+      if (await authManager.refreshUserSession()) {
         setAuthenticated(true);
       } else {
-        logoutUser();
+        await authManager.logoutUser();
         setAuthenticated(false);
         navigate('/');
       }
@@ -42,7 +36,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     document.onclick = () => validateUserSession();
     document.onscroll = () => validateUserSession();
     document.onkeydown = () => validateUserSession();
-  }, [new Date()]);
+  }, []);
 
   const contextValue = { isAuthenticated, setAuthenticated };
 
