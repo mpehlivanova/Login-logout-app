@@ -17,3 +17,10 @@ export enum Pages {
   groups = 'groups',
   video = 'video',
 }
+
+export enum PERMISSIONS {
+  DELETE = 'delete:users',
+  READ = 'read:users',
+  WRITE = 'write:users',
+  CREATE = 'create:users',
+}
