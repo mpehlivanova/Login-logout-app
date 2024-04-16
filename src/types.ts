@@ -1,10 +1,11 @@
 import { IdTokenClaims } from '@azure/msal-browser';
-import { Pages } from './enum';
+import { Pages, PERMISSIONS } from './enum';
 
 export interface User {
   name: string;
   email: string;
   picture: string;
+  permissions: string[];
 }
 
 export interface RouteConfigurationType {

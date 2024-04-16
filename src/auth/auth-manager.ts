@@ -1,12 +1,12 @@
 import {
-  AccountInfo,
   AuthenticationResult,
   InteractionRequiredAuthError,
   PublicClientApplication,
 } from '@azure/msal-browser';
 import { msalConfig, SCOPES } from '../api/constants';
 import { TokenType } from '../enum';
-import { AuthenticationResponseType, IdTokenClaimsType } from '../types';
+import { AuthenticationResponseType } from '../types';
+import { jwtDecode } from 'jwt-decode';
 
 export const AuthManager = () => {
   let msalInst: PublicClientApplication | null = null;
@@ -47,10 +47,11 @@ export const AuthManager = () => {
   };
 
   const isValidIdToken: () => boolean = () => {
-    const { idTokenClaims }: any = msalInst?.getActiveAccount() || null;
+    const accessToken: string = getAccessToken() || '';
+    const accessTokenDecode = jwtDecode(accessToken);
 
-    if (idTokenClaims) {
-      const expDate = new Date(idTokenClaims?.exp * 1000);
+    if (accessTokenDecode?.exp) {
+      const expDate = new Date(accessTokenDecode?.exp * 1000);
       return expDate > new Date();
     }
     return false;
@@ -82,11 +83,18 @@ export const AuthManager = () => {
   };
 
   const getLoggedUser: Function = () => {
-    const account: AccountInfo | null = msalInst?.getActiveAccount() || null;
-    if (account) {
-      const { name, email, picture }: IdTokenClaimsType | any =
-        account?.idTokenClaims;
-      return { name, email, picture };
+    const accessToken: string = getAccessToken() || '';
+    const idToken: string = getIdToken() || '';
+
+    if (idToken && accessToken) {
+      const { name, email, picture } = jwtDecode<any>(idToken) || '';
+      const { permissions } = jwtDecode<any>(accessToken) || '';
+      return {
+        name,
+        email,
+        picture,
+        permissions,
+      };
     }
     return undefined;
   };
