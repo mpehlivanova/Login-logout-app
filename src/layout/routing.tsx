@@ -6,7 +6,7 @@ import { routeConfiguration } from './constants';
 const Routing = () => {
   return (
     <Routes>
-      {routeConfiguration.map(({ id, isRequireAuth, url, component }) =>
+      {Object.values(routeConfiguration).map(({ id, isRequireAuth, url, component }) =>
         isRequireAuth ?
           <Route key={id} path={`/${url}`} element={<RequireAuth>{component}</RequireAuth>} />
           :

@@ -12,6 +12,7 @@ export interface RouteConfigurationType {
   id: Pages;
   isRequireAuth: boolean;
   url: string;
+  permission?: PERMISSIONS[];
   component: React.ReactNode;
 }
 
