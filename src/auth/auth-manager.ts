@@ -47,7 +47,7 @@ export const AuthManager = () => {
     );
   };
 
-  const isValidIdToken: () => boolean = () => {
+  const isValidAccessToken: () => boolean = () => {
     const accessToken: string = getAccessToken() || '';
     const accessTokenDecode = jwtDecode(accessToken);
 
@@ -106,7 +106,7 @@ export const AuthManager = () => {
     loginUser,
     getAccessToken,
     getIdToken,
-    isValidIdToken,
+    isValidAccessToken,
     refreshUserSession,
     getLoggedUser,
   };
