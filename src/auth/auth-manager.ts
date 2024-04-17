@@ -39,7 +39,8 @@ export const AuthManager = () => {
   };
 
   const logoutUser: Function = async () => {
-    await msalInst?.logoutPopup({ account: msalInst?.getActiveAccount() });
+    const idToken = getIdToken() || '';
+    await msalInst?.logoutPopup({ idTokenHint: idToken });
 
     Object.keys(TokenType).forEach((token) =>
       window.sessionStorage.removeItem(token)
