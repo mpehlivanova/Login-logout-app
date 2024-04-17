@@ -19,10 +19,8 @@ export enum Pages {
 }
 
 export enum PERMISSIONS {
-  DELETE = 'delete:users',
   READ = 'read:users',
-  WRITE = 'write:users',
   CREATE = 'create:users',
-  EDIT = 'edit:users',
-  UPDATE = 'update:user',
+  DELETE = 'delete:users',
+  UPDATE = 'update:users',
 }
