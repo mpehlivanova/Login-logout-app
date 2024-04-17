@@ -21,7 +21,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isAuthenticated, setAuthenticated] = useState<boolean>(Boolean(accessToken));
 
   const validateUserSession = async () => {
-    if (isAuthenticated && !authManager.isValidIdToken()) {
+    if (isAuthenticated && !authManager.isValidAccessToken()) {
       if (await authManager.refreshUserSession()) {
         setAuthenticated(true);
       } else {
