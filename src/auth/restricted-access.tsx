@@ -10,5 +10,4 @@ export const RestrictedAccess: React.FC<{ children: JSX.Element, permissionsPage
   if (hasPermission) {
     return children;
   }
-  return null;
 };
