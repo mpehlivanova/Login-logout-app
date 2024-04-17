@@ -23,4 +23,6 @@ export enum PERMISSIONS {
   READ = 'read:users',
   WRITE = 'write:users',
   CREATE = 'create:users',
+  EDIT = 'edit:users',
+  UPDATE = 'update:user',
 }
