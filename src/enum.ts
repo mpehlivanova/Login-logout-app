@@ -11,7 +11,7 @@ export enum Pages {
   profile = 'profile',
   notifications = 'notifications',
   pageNotFound = 'page-not-found',
-  login = 'login',
+  login = '/',
   friends = 'friends',
   message = 'message',
   groups = 'groups',
