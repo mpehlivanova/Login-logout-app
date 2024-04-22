@@ -14,8 +14,8 @@ function App() {
   return (
     <AuthProvider>
       <UserProvider>
+        <CssBaseline />
         <ThemeProvider theme={responsiveFontSizes(theme)}>
-          <CssBaseline />
           <Layout>
             <Routing />
           </Layout>
