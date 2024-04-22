@@ -4,7 +4,7 @@ import { Header, Navigation } from '../components';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <Grid container>
+    <Grid container p={2}>
       <Grid item xs={12} display='flex' justifyContent="space-between">
         <Navigation />
         <Header />

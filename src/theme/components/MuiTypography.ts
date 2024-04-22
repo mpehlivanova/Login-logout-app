@@ -3,7 +3,7 @@ import palette from './palette';
 export default {
   styleOverrides: {
     root: {
-      // color: palette.text.primary,
+      color: palette.text.primary,
     },
   },
 };
