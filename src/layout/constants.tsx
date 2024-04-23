@@ -44,7 +44,7 @@ export const routeConfiguration = {
     permission: [PERMISSIONS.READ, PERMISSIONS.UPDATE],
   },
   video: {
-    id: Pages.video,
-    permission: [PERMISSIONS.READ, PERMISSIONS.UPDATE],
+    id: Pages.style,
+    permission: [PERMISSIONS.READ],
   },
 };

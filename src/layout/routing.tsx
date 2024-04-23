@@ -14,7 +14,7 @@ import {
   MessagePage,
   NotificationsPage,
   ProfilePage,
-  VideoPage,
+  StylePage,
   UserPage
 } from '../pages'
 import { Pages, PERMISSIONS } from '../enum';
@@ -92,10 +92,10 @@ const Routing = () => {
           </RestrictedAccess>
         </RequireAuth>} />
 
-      <Route path={`/${Pages.video}`} element={
+      <Route path={`/${Pages.style}`} element={
         <RequireAuth>
-          <RestrictedAccess permissionsPage={[PERMISSIONS.READ, PERMISSIONS.UPDATE]} permissionsUser={permissionsUser}>
-            <VideoPage />
+          <RestrictedAccess permissionsPage={[PERMISSIONS.READ]} permissionsUser={permissionsUser}>
+            <StylePage />
           </RestrictedAccess>
         </RequireAuth>} />
 

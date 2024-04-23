@@ -15,7 +15,7 @@ export enum Pages {
   friends = 'friends',
   message = 'message',
   groups = 'groups',
-  video = 'video',
+  style = 'style',
 }
 
 export enum PERMISSIONS {
