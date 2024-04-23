@@ -7,7 +7,7 @@ export default {
   styleOverrides: {
     root: {
       fontSize: FONT_SIZE_MEDIUM,
-      ...spacing({ py: 1, px: 2 }),
+      ...spacing({ py: 1, px: 3 }),
       textTransform: 'capitalize',
       boxShadow: shadows[0],
       borderRadius: BORDER_RADIUS,

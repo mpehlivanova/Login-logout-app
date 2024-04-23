@@ -6,7 +6,7 @@ export const MuiPaper = {
   styleOverrides: {
     root: {
       boxShadow: shadows[0],
-      borderRadius: BORDER_RADIUS,
+      borderRadius: 2 * BORDER_RADIUS,
       color: palette.text.secondary,
       background: palette.background.paper,
     },

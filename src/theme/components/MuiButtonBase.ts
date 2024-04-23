@@ -5,7 +5,7 @@ import shadows from './shadows';
 export default {
   styleOverrides: {
     root: {
-      ...spacing({ py: 2, px: 1 }),
+      ...spacing({ py: 1, px: 3 }),
       textTransform: 'none',
       boxShadow: shadows[0],
       borderRadius: BORDER_RADIUS,
