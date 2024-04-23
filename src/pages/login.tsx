@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Navigate, useNavigate } from 'react-router-dom';
-import { Alert, Button, Grid } from '@mui/material';
+import { Alert, Button, Dialog, DialogContent, Grid, Typography } from '@mui/material';
 import { authManager } from '../App'
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Pages } from '../enum';
+import { palette } from '../theme/components';
 
 
 const LoginPage = () => {
@@ -28,18 +29,41 @@ const LoginPage = () => {
   }
 
   return (
-    <Grid container justifyContent="center">
-      <Grid item container justifyContent="center" p={2}>
-        <Button
-          variant="contained"
-          type="submit"
-          onClick={handleSubmit}
-        >
-          login
-        </Button>
+    <Dialog open maxWidth='xs'>
+      <Grid item container p={5}>
+        <Grid item>
+          <Typography variant='h5'><b>Sign in to Login logout app</b></Typography>
+        </Grid>
+        <Grid xs={12} item display='flex' justifyContent="center" p={5}>
+          <img
+            width='50%'
+            src='images/icon-login-page.png'
+            alt='login page logo'
+            loading="lazy"
+          />
+        </Grid>
+        <Grid xs={12} item justifyContent="center" >
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{
+              backgroundColor: palette.grey[900],
+              width: '100%',
+              ":hover": {
+                backgroundColor: palette.grey[900],
+              },
+              py: 2
+            }}
+            onClick={handleSubmit}
+          >
+            <b>login</b>
+          </Button>
+        </Grid>
+        <Grid item>
+          {error && <Alert severity='error'>{error}</Alert>}
+        </Grid>
       </Grid>
-      {error && <Alert severity='error'>{error}</Alert>}
-    </Grid >
+    </Dialog>
   );
 }
 export default LoginPage;
