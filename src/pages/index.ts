@@ -5,7 +5,7 @@ export { default as LoginPage } from './login';
 export { default as PageNotFound } from './page-not-found';
 export { default as FriendsPage } from './friends';
 export { default as GroupsPage } from './groups';
-export { default as VideoPage } from './video';
+export { default as StylePage } from './style';
 export { default as ProfilePage } from './profile';
 export { default as NotificationsPage } from './notifications';
 export { default as MessagePage } from './message';
