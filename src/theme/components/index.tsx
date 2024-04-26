@@ -6,3 +6,4 @@ export { default as MuiMenuItem } from './MuiMenuItem';
 export { default as MuiMenu } from './MuiMenuItem';
 export { MuiPaper } from './MuiPaper';
 export { default as MuiTypography } from './MuiTypography';
+export { default as MuiDialog } from './MuiDialog';

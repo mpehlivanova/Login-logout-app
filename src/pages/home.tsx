@@ -6,9 +6,8 @@ const HomePage = () => {
   const { user } = useUserContext();
 
   return (
-    <Grid container spacing={2}>
+    <Grid container>
       <Grid item xs={12}><h1>Home page</h1> </Grid>
-      <Grid item xs={12}><h1>Welcome, {user?.name || user?.email} !</h1></Grid>
     </Grid>
   );
 }

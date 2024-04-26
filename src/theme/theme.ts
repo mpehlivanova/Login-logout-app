@@ -3,6 +3,7 @@ import {
   palette,
   typography,
   MuiButton,
+  MuiDialog,
   MuiList,
   MuiListItemIcon,
   MuiMenuItem,
@@ -16,6 +17,7 @@ const theme: any = {
   typography,
   components: {
     MuiButton,
+    MuiDialog,
     MuiList,
     MuiListItemIcon,
     MuiMenuItem,
