@@ -1,15 +1,11 @@
 import React from "react";
-import { Link } from 'react-router-dom';
 import { Button, Grid, ListItemIcon, MenuItem, MenuList, Paper, Typography } from '@mui/material';
 import { Dashboard, Person, People } from '@mui/icons-material';
-import { Pages } from '../enum';
-
 
 const StylePage = () => {
   return (
     <Grid container>
       <Grid item xs={12}><h1>Style page</h1> </Grid>
-      <Grid item xs={12}> <Link to={`/${Pages.home}`}>back</Link></Grid>
 
       <Grid item xs={12}>
         <Typography variant='h4' py={2}><b>Style components</b></Typography>
@@ -39,7 +35,7 @@ const StylePage = () => {
           </MenuList>
         </Paper>
         <Typography variant='h5' py={2}><b>Buttons</b></Typography>
-        <Grid item display="flex" gap={1} wrap='wrap' spacing={1} flexDirection='column'>
+        <Grid container item display="flex" gap={1} wrap='wrap' flexDirection='column'>
 
           <Grid item display='flex' gap={1}>
             <Button variant="contained" color="primary">contained</Button>

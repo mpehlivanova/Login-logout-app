@@ -73,7 +73,7 @@ const Routing = () => {
 
       <Route path={`/${Pages.profile}`} element={
         <RequireAuth>
-          <RestrictedAccess permissionsPage={[PERMISSIONS.READ, PERMISSIONS.DELETE]} permissionsUser={permissionsUser}>
+          <RestrictedAccess permissionsPage={[PERMISSIONS.READ]} permissionsUser={permissionsUser}>
             <ProfilePage />
           </RestrictedAccess>
         </RequireAuth>} />
