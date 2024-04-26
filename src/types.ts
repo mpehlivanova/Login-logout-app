@@ -1,3 +1,4 @@
+import React from 'react';
 import { IdTokenClaims } from '@azure/msal-browser';
 import { Pages, PERMISSIONS } from './enum';
 
@@ -10,7 +11,9 @@ export interface User {
 
 export interface RouteConfigurationType {
   id: Pages;
+  link: Pages;
   permission?: PERMISSIONS[];
+  icon?: React.ReactElement;
 }
 
 export type MethodType = 'POST' | 'GET' | 'DELETE';

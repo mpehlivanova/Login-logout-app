@@ -1,18 +1,22 @@
 import React from "react";
 import { Grid } from '@mui/material';
-import { Header, Navigation } from '../components';
+import { Header, NavigationBar } from '../components';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <Grid container p={2}>
+    <Grid container>
       <Grid item xs={12} display='flex' justifyContent="space-between">
-        <Navigation />
         <Header />
       </Grid>
-      <Grid item xs={12}>
-        {children}
+      <Grid container item xs={12}>
+        <Grid item xs={4} sm={4} md={3} xl={2}>
+          <NavigationBar />
+        </Grid>
+        <Grid item xs={8} sm={8} md={9} xl={10}>
+          {children}
+        </Grid>
       </Grid>
-    </Grid>
+    </Grid >
   );
 }
 
