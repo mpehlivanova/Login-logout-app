@@ -3,16 +3,15 @@ import { Grid } from '@mui/material';
 import { Header, NavigationBar } from '../components';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+
   return (
-    <Grid container>
-      <Grid item xs={12} display='flex' justifyContent="space-between">
-        <Header />
+    <Grid container item xs={12}>
+      <Grid item xs={3}>
+        <NavigationBar />
       </Grid>
-      <Grid container item xs={12}>
-        <Grid item xs={4} sm={4} md={3} xl={2}>
-          <NavigationBar />
-        </Grid>
-        <Grid item xs={8} sm={8} md={9} xl={10}>
+      <Grid container item xs={9}>
+        <Header />
+        <Grid item xs={12} height='90vh'>
           {children}
         </Grid>
       </Grid>

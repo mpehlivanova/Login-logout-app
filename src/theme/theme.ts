@@ -4,6 +4,7 @@ import {
   typography,
   MuiButton,
   MuiDialog,
+  MuiDrawer,
   MuiList,
   MuiListItemIcon,
   MuiMenuItem,
@@ -18,6 +19,7 @@ const theme: any = {
   components: {
     MuiButton,
     MuiDialog,
+    MuiDrawer,
     MuiList,
     MuiListItemIcon,
     MuiMenuItem,
