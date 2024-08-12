@@ -1,12 +1,5 @@
 export { default as UserPage } from './user';
-export { default as FavoritePage } from './favorite';
 export { default as HomePage } from './home';
 export { default as LoginPage } from './login';
 export { default as PageNotFound } from './page-not-found';
-export { default as FriendsPage } from './friends';
-export { default as GroupsPage } from './groups';
 export { default as StylePage } from './style';
-export { default as ProfilePage } from './profile';
-export { default as NotificationsPage } from './notifications';
-export { default as MessagePage } from './message';
-export { default as HistoryPage } from './history';

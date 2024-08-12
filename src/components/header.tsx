@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
 import { Button, Grid } from '@mui/material';
-import { Menu } from '@mui/icons-material';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { authManager } from '../App';
+import { Search } from '@mui/icons-material';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -11,7 +11,9 @@ export default function Header() {
 
   return (
     <Grid item container display="flex" justifyContent={isAuthenticated ? "space-between" : "flex-end"}>
-      <Grid item> <Menu /></Grid>
+      <Grid item>
+        <Search />
+      </Grid>
       {isAuthenticated && (
         <Grid item>
           <Button variant="contained" onClick={async () => {
