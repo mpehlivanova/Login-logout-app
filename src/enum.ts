@@ -5,16 +5,11 @@ export enum TokenType {
 
 export enum Pages {
   home = 'home',
-  favorite = 'favorite',
   user = 'user',
-  history = 'history',
-  profile = 'profile',
   notifications = 'notifications',
+  settings = 'settings',
   pageNotFound = 'page-not-found',
   login = '/',
-  friends = 'friends',
-  message = 'message',
-  groups = 'groups',
   style = 'style',
 }
 

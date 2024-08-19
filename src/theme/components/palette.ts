@@ -78,7 +78,7 @@ export default {
   tonalOffset: 0.2,
   background: {
     paper: '#FFFFFF',
-    default: transparentize(0.88, grey[500]),
+    default: '#f9fafb',
   },
   backdrop: {
     mobile: '#32609C',
