@@ -6,7 +6,7 @@ export const MuiList = {
   styleOverrides: {
     root: {
       ...spacing({ p: 0 }),
-      backgroundColor: palette.common.white,
+      backgroundColor: palette.background.default,
       '& :focus-visible': {
         outline: 'none',
       },

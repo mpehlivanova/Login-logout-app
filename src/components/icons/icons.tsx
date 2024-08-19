@@ -23,3 +23,21 @@ export function DashboardIcon(props: SvgIconProps) {
   );
 }
 
+export function NotificationIcon(props: SvgIconProps) {
+  return (
+    <SvgIcon width="32px" height="32px" viewBox="0 0 22 22" {...props}>
+      <path d="M18.75 9v.704c0 .845.24 1.671.692 2.374l1.108 1.723c1.011 1.574.239 3.713-1.52 4.21a25.8 25.8 0 0 1-14.06 0c-1.759-.497-2.531-2.636-1.52-4.21l1.108-1.723a4.4 4.4 0 0 0 .693-2.374V9c0-3.866 3.022-7 6.749-7s6.75 3.134 6.75 7" opacity="0.5"></path>
+      <path d="M12.75 6a.75.75 0 0 0-1.5 0v4a.75.75 0 0 0 1.5 0zM7.243 18.545a5.002 5.002 0 0 0 9.513 0c-3.145.59-6.367.59-9.513 0"></path>
+    </SvgIcon>
+  );
+}
+
+export function SearchIcon(props: SvgIconProps) {
+  return (
+    <SvgIcon width="32px" height="32px" viewBox="0 0 22 22" {...props}>
+      <path  d="m20.71 19.29l-3.4-3.39A7.92 7.92 0 0 0 19 11a8 8 0 1 0-8 8a7.92 7.92 0 0 0 4.9-1.69l3.39 3.4a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.42M5 11a6 6 0 1 1 6 6a6 6 0 0 1-6-6"></path>
+    </SvgIcon>
+  );
+}
+
+
