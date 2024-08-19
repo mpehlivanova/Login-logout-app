@@ -7,4 +7,7 @@ export { default as MuiMenu } from './MuiMenuItem';
 export { MuiPaper } from './MuiPaper';
 export { default as MuiTypography } from './MuiTypography';
 export { default as MuiDialog } from './MuiDialog';
-export { default as MuiDrawer } from './MuiDrawer'
+export { default as MuiDrawer } from './MuiDrawer';
+export { default as MuiDivider } from './MuiDivider';
+export { default as MuiInputBase } from './MuiInputBase';
+export { default as MuiFilledInput } from './MuiFilledInput';
