@@ -1,4 +1,3 @@
-import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import RequireAuth from '../auth/require-auth';
 import { RestrictedAccess } from '../auth/restricted-access';

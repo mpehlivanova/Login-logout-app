@@ -1,4 +1,3 @@
-import React from 'react';
 import { Style } from '@mui/icons-material';
 import { Pages, PERMISSIONS } from '../../enum';
 import { DashboardIcon, UserIcon } from '../icons/icons';

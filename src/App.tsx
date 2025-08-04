@@ -1,4 +1,3 @@
-import React from 'react';
 import { CssBaseline, responsiveFontSizes, ThemeProvider } from '@mui/material';
 import Routing from './layout/routing'
 import Layout from './layout/layout';

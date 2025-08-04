@@ -1,4 +1,3 @@
-import React from 'react';
 import { PERMISSIONS } from '../enum'
 
 export const RestrictedAccess: React.FC<{ children: JSX.Element, permissionsPage?: PERMISSIONS[], permissionsUser: string[] }> = ({
