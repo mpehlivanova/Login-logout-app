@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Navigate, useNavigate } from 'react-router-dom';
-import { Alert, Button, Dialog, DialogContent, Grid, Typography } from '@mui/material';
+import { Alert, Button, Dialog, Grid, Typography } from '@mui/material';
 import { authManager } from '../App'
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Pages } from '../enum';

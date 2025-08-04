@@ -1,9 +1,6 @@
-import React from "react";
 import { Grid } from '@mui/material';
-import { useUserContext } from '../hooks/useUserContext';
 
 const HomePage = () => {
-  const { user } = useUserContext();
 
   return (
     <Grid container>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { IdTokenClaims } from '@azure/msal-browser';
 import { Pages, PERMISSIONS } from './enum';
 
