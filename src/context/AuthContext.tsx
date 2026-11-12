@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { createContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authManager } from '../App';
@@ -20,8 +20,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const accessToken: string = authManager.getAccessToken() || '';
   const [isAuthenticated, setAuthenticated] = useState<boolean>(Boolean(accessToken));
 
+  const isValidating = useRef(false);
+
   const validateUserSession = async () => {
-    if (isAuthenticated && !authManager.isValidAccessToken()) {
+    if (
+      isValidating.current ||
+      !authManager.getAccessToken() ||
+      authManager.isValidAccessToken()
+    ) {
+      return;
+    }
+    isValidating.current = true;
+    try {
       if (await authManager.refreshUserSession()) {
         setAuthenticated(true);
       } else {
@@ -29,7 +39,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setAuthenticated(false);
         navigate('/');
       }
-    };
+    } catch (error) {
+      console.error('failed to validate user session', error);
+    } finally {
+      isValidating.current = false;
+    }
   };
 
   useEffect(() => {

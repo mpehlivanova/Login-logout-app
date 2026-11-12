@@ -7,7 +7,6 @@ export const routeConfiguration = {
   home: {
     id: Pages.home,
     link: Pages.home,
-    permission: [PERMISSIONS.READ],
     icon: <DashboardIcon />
   },
   login: {
