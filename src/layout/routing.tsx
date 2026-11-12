@@ -21,7 +21,7 @@ const Routing = () => {
       <Route path={`/${Pages.home}`} element={
         <RequireAuth>
           <RestrictedAccess permissionsPage={[PERMISSIONS.READ]} permissionsUser={permissionsUser}>
-            <HomePage />
+          <HomePage />
           </RestrictedAccess>
         </RequireAuth>} />
       <Route path={`/${Pages.user}`} element={

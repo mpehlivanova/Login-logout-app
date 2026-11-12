@@ -10,10 +10,13 @@ import { palette } from '../theme/components';
 const LoginPage = () => {
   const { isAuthenticated, setAuthenticated } = useAuthContext();
   const [error, setError] = useState<string>('')
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false)
   const navigate = useNavigate();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    setError('');
+    setIsLoggingIn(true);
     try {
       await authManager.loginUser();
       setAuthenticated(true);
@@ -21,6 +24,8 @@ const LoginPage = () => {
     } catch (error: any) {
       setAuthenticated(false);
       setError(error.message);
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -46,6 +51,7 @@ const LoginPage = () => {
           <Button
             variant="contained"
             type="submit"
+            disabled={isLoggingIn}
             sx={{
               backgroundColor: palette.grey[900],
               width: '100%',

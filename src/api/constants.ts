@@ -1,5 +1,5 @@
 import { Configuration, ProtocolMode } from '@azure/msal-browser';
-import { CLIENT_ID, AUTHORITY, BASE_URL } from '../constants';
+import { CLIENT_ID, AUTHORITY, BASE_URL, AUDIENCE } from '../constants';
 
 export const SCOPES = [
   'openid',
@@ -11,6 +11,11 @@ export const SCOPES = [
   'update:users',
 ];
 export const HEADERS = { 'content-type': 'application/json' };
+
+export const TOKEN_REQUEST = {
+  scopes: SCOPES,
+  extraQueryParameters: AUDIENCE ? { audience: AUDIENCE } : undefined,
+};
 
 export const msalConfig: Configuration = {
   auth: {

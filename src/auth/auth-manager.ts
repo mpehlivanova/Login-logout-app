@@ -3,17 +3,52 @@ import {
   InteractionRequiredAuthError,
   PublicClientApplication,
 } from '@azure/msal-browser';
-import { msalConfig, SCOPES } from '../api/constants';
+import { msalConfig, TOKEN_REQUEST } from '../api/constants';
 import { TokenType } from '../enum';
 import { AuthenticationResponseType } from '../types';
 import { jwtDecode } from 'jwt-decode';
 
+const safeDecode = (token: string): any => {
+  if (!token) {
+    return undefined;
+  }
+  try {
+    return jwtDecode<any>(token);
+  } catch (error) {
+    console.error('token is not a valid JWT', error);
+    return undefined;
+  }
+};
+
+export const isAuthPopup = (): boolean =>
+  Boolean(window.opener) && window.opener !== window;
+
 export const AuthManager = () => {
   let msalInst: PublicClientApplication | null = null;
+  let ready: Promise<void> | null = null;
 
-  const init: Function = async () => {
+  const startMsal = async () => {
     msalInst = new PublicClientApplication(msalConfig);
     await msalInst.initialize();
+    if (isAuthPopup()) {
+      return;
+    }
+    try {
+      const result = await msalInst.handleRedirectPromise();
+      if (result) {
+        saveUserDataSessionStorage(result);
+        msalInst.setActiveAccount(result.account);
+      }
+    } catch (error) {
+      console.error('failed to handle redirect response', error);
+    }
+  };
+
+  const init = (): Promise<void> => {
+    if (!ready) {
+      ready = startMsal();
+    }
+    return ready;
   };
 
   const saveUserDataSessionStorage: Function = (
@@ -32,13 +67,15 @@ export const AuthManager = () => {
   };
 
   const loginUser: Function = async () => {
+    await init();
     const result: AuthenticationResult | undefined =
-      await msalInst?.loginPopup();
+      await msalInst?.loginPopup(TOKEN_REQUEST);
     saveUserDataSessionStorage(result);
     await msalInst?.setActiveAccount(result?.account || null);
   };
 
   const logoutUser: Function = async () => {
+    await init();
     const idToken = getIdToken() || '';
     await msalInst?.logoutPopup({ idTokenHint: idToken });
 
@@ -49,7 +86,10 @@ export const AuthManager = () => {
 
   const isValidAccessToken: () => boolean = () => {
     const accessToken: string = getAccessToken() || '';
-    const accessTokenDecode = jwtDecode(accessToken);
+    if (!accessToken) {
+      return false;
+    }
+    const accessTokenDecode = safeDecode(accessToken);
 
     if (accessTokenDecode?.exp) {
       const expDate = new Date(accessTokenDecode?.exp * 1000);
@@ -59,27 +99,27 @@ export const AuthManager = () => {
   };
 
   const refreshUserSession: Function = async () => {
+    await init();
     const request = {
-      scopes: SCOPES,
+      ...TOKEN_REQUEST,
       account: (await msalInst?.getActiveAccount()) || undefined,
       forceRefresh: true,
     };
 
     try {
-      const refreshSession = await msalInst
-        ?.acquireTokenSilent(request)
-        .catch(async (error: any) => {
-          if (error instanceof InteractionRequiredAuthError) {
-            await msalInst?.acquireTokenRedirect(request);
-          }
-        });
+      const refreshSession = await msalInst?.acquireTokenSilent(request);
       if (!refreshSession) {
         return false;
       }
       saveUserDataSessionStorage(refreshSession);
       return true;
     } catch (error) {
-      new Error('failed refresh session request');
+      if (error instanceof InteractionRequiredAuthError) {
+       await msalInst?.acquireTokenRedirect(request);
+        return true;
+      }
+      console.error('failed refresh session request', error);
+      return false;
     }
   };
 
@@ -88,8 +128,8 @@ export const AuthManager = () => {
     const idToken: string = getIdToken() || '';
 
     if (idToken && accessToken) {
-      const { name, email, picture } = jwtDecode<any>(idToken) || '';
-      const { permissions } = jwtDecode<any>(accessToken) || '';
+      const { name, email, picture } = safeDecode(idToken) || {};
+      const { permissions = [] } = safeDecode(accessToken) || {};
       return {
         name,
         email,
