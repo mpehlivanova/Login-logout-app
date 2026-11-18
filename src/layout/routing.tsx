@@ -3,13 +3,11 @@ import RequireAuth from '../auth/require-auth';
 import { RestrictedAccess } from '../auth/restricted-access';
 import { useUserContext } from '../hooks/useUserContext';
 import {
-  HomePage,
   LoginPage,
   PageNotFound,
-  StylePage,
-  UserPage
 } from '../pages'
-import { Pages, PERMISSIONS } from '../enum';
+import { Pages} from '../enum';
+import { routeConfiguration } from '../components/navigation/constants';
 
 const Routing = () => {
   const { user } = useUserContext();
@@ -18,24 +16,14 @@ const Routing = () => {
     <Routes>
       <Route path="*" element={<PageNotFound />} />
       <Route path={`/${Pages.login}`} element={<LoginPage />} />
-      <Route path={`/${Pages.home}`} element={
-        <RequireAuth>
-          <RestrictedAccess permissionsPage={[PERMISSIONS.READ]} permissionsUser={permissionsUser}>
-          <HomePage />
-          </RestrictedAccess>
-        </RequireAuth>} />
-      <Route path={`/${Pages.user}`} element={
-        <RequireAuth>
-          <RestrictedAccess permissionsPage={[PERMISSIONS.READ, PERMISSIONS.UPDATE]} permissionsUser={permissionsUser}>
-            <UserPage />
-          </RestrictedAccess>
-        </RequireAuth>} />
-      <Route path={`/${Pages.style}`} element={
-        <RequireAuth>
-          <RestrictedAccess permissionsPage={[PERMISSIONS.READ]} permissionsUser={permissionsUser}>
-            <StylePage />
-          </RestrictedAccess>
-        </RequireAuth>} />
+       {Object.values(routeConfiguration)?.length && Object.values(routeConfiguration)?.map(({ id, link, component, permissions }: any) =>
+        <Route key={id} path={`/${link}`} element={
+          <RequireAuth>
+            <RestrictedAccess permissionsPage={permissions} permissionsUser={permissionsUser}>
+              {component}
+            </RestrictedAccess>
+          </RequireAuth>} />
+      )}
     </Routes>
   );
 };

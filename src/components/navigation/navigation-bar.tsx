@@ -3,8 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Avatar, Drawer, Grid, IconButton, ListItemIcon, ListItemText, MenuItem, MenuList, Typography, useMediaQuery } from '@mui/material';
 import { List } from '@mui/icons-material';
 import { transparentize } from 'polished';
-import { RestrictedAccess } from '../../auth/restricted-access';
-import RequireAuth from '../../auth/require-auth';
 import { useUserContext } from '../../hooks/useUserContext';
 import { routeConfiguration } from './constants';
 import { RouteConfigurationType } from '../../types';
@@ -17,7 +15,6 @@ export default function NavigationBar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
-  const permissionsUser: any = user?.permissions;
   const tabletAndUp = useMediaQuery((theme: any) => theme.breakpoints.up('md'));
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -48,9 +45,10 @@ export default function NavigationBar() {
       <Grid item xs={12}>
         <MenuList disabledItemsFocusable>
           {Object.values(routeConfiguration)?.map(({
-            id, icon, link, permission
+            id, icon, link, showInMenu,
           }: RouteConfigurationType) => {
             const isActivePage = pathname === `/${link}`;
+            if (!showInMenu) return null;
             return (
               <Link
                 key={id}
@@ -60,33 +58,29 @@ export default function NavigationBar() {
                 }}
                 onClick={toggleDrawer(false)}
               >
-                <RequireAuth key={id}>
-                  <RestrictedAccess permissionsPage={permission} permissionsUser={permissionsUser}>
-                    <MenuItem
-                      disableRipple
-                      onClick={() => navigate(`/${link}`)}
-                      sx={{
-                        backgroundColor: isActivePage ? transparentize(0.92, palette.primary.main) : undefined,
-                        py: 2,
-                        my: 1,
-                      }}
-                    >
-                      <ListItemIcon
-                        sx={{
-                          '& .MuiSvgIcon-root': {
-                            color: isActivePage ? palette.primary.main : undefined,
-                          },
-                        }} >
-                        {icon}
-                      </ListItemIcon>
-                      <ListItemText sx={{
-                        '& .MuiTypography-root': {
-                          color: isActivePage ? palette.primary.main : undefined,
-                        },
-                      }}>{link}</ListItemText>
-                    </MenuItem>
-                  </RestrictedAccess>
-                </RequireAuth>
+               <MenuItem
+                  disableRipple
+                  onClick={() => navigate(`/${link}`)}
+                  sx={{
+                    backgroundColor: isActivePage ? transparentize(0.92, palette.primary.main) : undefined,
+                    py: 2,
+                    my: 1,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      '& .MuiSvgIcon-root': {
+                        color: isActivePage ? palette.primary.main : undefined,
+                      },
+                    }} >
+                    {icon}
+                  </ListItemIcon>
+                  <ListItemText sx={{
+                    '& .MuiTypography-root': {
+                      color: isActivePage ? palette.primary.main : undefined,
+                    },
+                  }}>{link}</ListItemText>
+                </MenuItem>
               </Link>
             );
           })}

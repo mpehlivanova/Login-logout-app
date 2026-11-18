@@ -13,6 +13,8 @@ export interface RouteConfigurationType {
   link: Pages;
   permission?: PERMISSIONS[];
   icon?: React.ReactElement;
+  component?: React.ReactElement;
+  showInMenu?: boolean;
 }
 
 export type MethodType = 'POST' | 'GET' | 'DELETE';
