@@ -1,8 +1,8 @@
 import { Style } from '@mui/icons-material';
-import { Pages, PERMISSIONS } from '../../enum';
-import { DashboardIcon, UserIcon } from '../icons/icons';
-import { HomePage, UserPage, StylePage} from '../../pages';
 
+import { DashboardIcon, UserIcon } from '@/components/icons/icons';
+import { Pages, PERMISSIONS } from '@/enum';
+import { HomePage, StylePage, UserPage } from '@/pages';
 
 export const routeConfiguration = {
   home: {
@@ -11,7 +11,7 @@ export const routeConfiguration = {
     icon: <DashboardIcon />,
     permissions: [],
     component: <HomePage />,
-    showInMenu: true
+    showInMenu: true,
   },
   login: {
     id: Pages.login,
@@ -27,14 +27,14 @@ export const routeConfiguration = {
     permissions: [PERMISSIONS.READ],
     icon: <UserIcon />,
     component: <UserPage />,
-    showInMenu: true
-  },  
+    showInMenu: true,
+  },
   style: {
     id: Pages.style,
     link: Pages.style,
-    permissions : [PERMISSIONS.READ],
+    permissions: [PERMISSIONS.READ],
     icon: <Style />,
     component: <StylePage />,
-    showInMenu: true
+    showInMenu: true,
   },
 };

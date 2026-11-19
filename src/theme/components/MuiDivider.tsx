@@ -3,7 +3,7 @@ import palette from './palette';
 export default {
   styleOverrides: {
     root: {
-      borderColor: palette.grey[300]
+      borderColor: palette.grey[300],
     },
   },
 };

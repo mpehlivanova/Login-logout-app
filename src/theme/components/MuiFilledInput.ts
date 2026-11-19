@@ -1,4 +1,5 @@
 import { spacing } from '@mui/system';
+
 import palette from './palette';
 
 export default {

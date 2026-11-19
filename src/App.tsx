@@ -1,13 +1,14 @@
 import { CssBaseline, responsiveFontSizes, ThemeProvider } from '@mui/material';
-import Routing from './layout/routing'
-import Layout from './layout/layout';
+
+import { AuthManager } from './auth/auth-manager';
 import { AuthProvider } from './context/AuthContext';
 import { UserProvider } from './context/UserContext';
-import { AuthManager } from './auth/auth-manager';
-import theme from './theme/theme'
+import Layout from './layout/layout';
+import Routing from './layout/routing';
+import theme from './theme/theme';
 
 export const authManager = AuthManager();
-authManager.init()
+authManager.init();
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
         </ThemeProvider>
       </UserProvider>
     </AuthProvider>
-  )
+  );
 }
 
 export default App;

@@ -1,4 +1,5 @@
-import { BORDER_RADIUS } from '../constants';
+import { BORDER_RADIUS } from '@/theme/constants';
+
 import palette from './palette';
 import shadows from './shadows';
 

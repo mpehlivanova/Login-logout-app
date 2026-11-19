@@ -1,5 +1,5 @@
-import { IdTokenClaims } from '@azure/msal-browser';
-import { Pages, PERMISSIONS } from './enum';
+import type { Pages, PERMISSIONS } from './enum';
+import type { IdTokenClaims } from '@azure/msal-browser';
 
 export interface User {
   name: string;

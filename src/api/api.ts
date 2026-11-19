@@ -1,13 +1,10 @@
-import { authManager } from '../App';
-import { MethodType } from '../types';
+import { authManager } from '@/App';
+
 import { HEADERS } from './constants';
 
-export const request = async (
-  endpoint: string,
-  method: MethodType,
-  body?: any,
-  authorization = true
-) => {
+import type { MethodType } from '@/types';
+
+export const request = async (endpoint: string, method: MethodType, body?: any, authorization = true) => {
   const headers = {
     ...HEADERS,
     ...(authorization
