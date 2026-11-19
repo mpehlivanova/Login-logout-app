@@ -1,19 +1,20 @@
 import { createTheme } from '@mui/material';
+
 import {
-  palette,
-  typography,
   MuiButton,
   MuiDialog,
   MuiDivider,
   MuiDrawer,
-  MuiInputBase,
   MuiFilledInput,
+  MuiInputBase,
   MuiList,
   MuiListItemIcon,
+  MuiMenu,
   MuiMenuItem,
   MuiPaper,
-  MuiMenu,
   MuiTypography,
+  palette,
+  typography,
 } from './components';
 
 const theme: any = {

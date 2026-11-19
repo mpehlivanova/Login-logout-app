@@ -1,4 +1,4 @@
-import { BORDER_RADIUS, FONT_SIZE_MEDIUM } from '../constants';
+import { BORDER_RADIUS, FONT_SIZE_MEDIUM } from '@/theme/constants';
 
 export default {
   styleOverrides: {

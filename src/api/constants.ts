@@ -1,5 +1,8 @@
-import { Configuration, ProtocolMode } from '@azure/msal-browser';
-import { CLIENT_ID, AUTHORITY, BASE_URL, AUDIENCE } from '../constants';
+import { ProtocolMode } from '@azure/msal-browser';
+
+import { AUDIENCE, AUTHORITY, BASE_URL, CLIENT_ID } from '@/constants';
+
+import type { Configuration } from '@azure/msal-browser';
 
 export const SCOPES = [
   'openid',

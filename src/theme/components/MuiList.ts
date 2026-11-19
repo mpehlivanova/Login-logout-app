@@ -1,6 +1,8 @@
-import { spacing } from '@mui/system';
-import palette from './palette';
 import { transparentize } from 'polished';
+
+import { spacing } from '@mui/system';
+
+import palette from './palette';
 
 export const MuiList = {
   styleOverrides: {

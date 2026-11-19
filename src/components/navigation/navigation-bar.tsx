@@ -1,12 +1,28 @@
-import { useState } from "react";
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Avatar, Drawer, Grid, IconButton, ListItemIcon, ListItemText, MenuItem, MenuList, Typography, useMediaQuery } from '@mui/material';
-import { List } from '@mui/icons-material';
+import { useState } from 'react';
+
 import { transparentize } from 'polished';
-import { useUserContext } from '../../hooks/useUserContext';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
+import { List } from '@mui/icons-material';
+import {
+  Avatar,
+  Drawer,
+  Grid,
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  MenuList,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
+
+import { useUserContext } from '@/hooks/useUserContext';
+import { palette } from '@/theme/components';
+
 import { routeConfiguration } from './constants';
-import { RouteConfigurationType } from '../../types';
-import { palette } from '../../theme/components';
+
+import type { RouteConfigurationType } from '@/types';
 
 const widthDrawer = 270;
 
@@ -22,31 +38,23 @@ export default function NavigationBar() {
   };
 
   const renderMenuList = (
-    <Grid container item display="flex" px={2} py={2} sx={{ width: widthDrawer }} gap={2}>
+    <Grid container item display='flex' px={2} py={2} sx={{ width: widthDrawer }} gap={2}>
       <Grid item xs={12} display='flex' flexDirection='column' gap={3}>
         <Grid item>
-          <img
-            width='18%'
-            src='images/logo.svg'
-            alt='logo'>
-          </img>
+          <img width='18%' src='images/logo.svg' alt='logo'></img>
         </Grid>
         <Grid item xs={12} borderRadius={3} bgcolor={transparentize(0.6, palette.grey[300])} p={2}>
           <Grid item display='flex' alignItems='center' gap={2}>
-            <Avatar
-              alt="Remy Sharp"
-              src={user?.picture}
-              sx={{ width: 46, height: 46 }}
-            />
-            <Typography><b>{user?.name}</b></Typography>
+            <Avatar alt='Remy Sharp' src={user?.picture} sx={{ width: 46, height: 46 }} />
+            <Typography>
+              <b>{user?.name}</b>
+            </Typography>
           </Grid>
         </Grid>
       </Grid>
       <Grid item xs={12}>
         <MenuList disabledItemsFocusable>
-          {Object.values(routeConfiguration)?.map(({
-            id, icon, link, showInMenu,
-          }: RouteConfigurationType) => {
+          {Object.values(routeConfiguration)?.map(({ id, icon, link, showInMenu }: RouteConfigurationType) => {
             const isActivePage = pathname === `/${link}`;
             if (!showInMenu) return null;
             return (
@@ -58,7 +66,7 @@ export default function NavigationBar() {
                 }}
                 onClick={toggleDrawer(false)}
               >
-               <MenuItem
+                <MenuItem
                   disableRipple
                   onClick={() => navigate(`/${link}`)}
                   sx={{
@@ -72,14 +80,19 @@ export default function NavigationBar() {
                       '& .MuiSvgIcon-root': {
                         color: isActivePage ? palette.primary.main : undefined,
                       },
-                    }} >
+                    }}
+                  >
                     {icon}
                   </ListItemIcon>
-                  <ListItemText sx={{
-                    '& .MuiTypography-root': {
-                      color: isActivePage ? palette.primary.main : undefined,
-                    },
-                  }}>{link}</ListItemText>
+                  <ListItemText
+                    sx={{
+                      '& .MuiTypography-root': {
+                        color: isActivePage ? palette.primary.main : undefined,
+                      },
+                    }}
+                  >
+                    {link}
+                  </ListItemText>
                 </MenuItem>
               </Link>
             );
@@ -92,13 +105,18 @@ export default function NavigationBar() {
   return (
     <>
       {tabletAndUp && renderMenuList}
-      {!tabletAndUp &&
+      {!tabletAndUp && (
         <>
-          <IconButton onClick={toggleDrawer(true)}><List /></IconButton>
-          {open && <Drawer open={open} onClose={toggleDrawer(false)}>
-            {renderMenuList}
-          </Drawer>}
+          <IconButton onClick={toggleDrawer(true)}>
+            <List />
+          </IconButton>
+          {open && (
+            <Drawer open={open} onClose={toggleDrawer(false)}>
+              {renderMenuList}
+            </Drawer>
+          )}
         </>
-      }
-    </>)
+      )}
+    </>
+  );
 }

@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
-import { createContext, useState } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import { authManager } from '../App';
+
+import { authManager } from '@/App';
 
 export interface AuthContextProps {
   isAuthenticated: boolean;
@@ -13,9 +14,7 @@ export const AuthContext = createContext<AuthContextProps>({
   setAuthenticated: () => null,
 });
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
   const accessToken: string = authManager.getAccessToken() || '';
   const [isAuthenticated, setAuthenticated] = useState<boolean>(Boolean(accessToken));
@@ -23,11 +22,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const isValidating = useRef(false);
 
   const validateUserSession = async () => {
-    if (
-      isValidating.current ||
-      !authManager.getAccessToken() ||
-      authManager.isValidAccessToken()
-    ) {
+    if (isValidating.current || !authManager.getAccessToken() || authManager.isValidAccessToken()) {
       return;
     }
     isValidating.current = true;
@@ -54,8 +49,5 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const contextValue = { isAuthenticated, setAuthenticated };
 
-  return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
-  );
-}
-
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
+};

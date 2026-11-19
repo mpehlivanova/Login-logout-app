@@ -1,5 +1,6 @@
 import { spacing } from '@mui/system';
-import { BORDER_RADIUS } from '../constants';
+
+import { BORDER_RADIUS } from '@/theme/constants';
 
 export default {
   styleOverrides: {

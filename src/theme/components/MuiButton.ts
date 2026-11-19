@@ -1,5 +1,7 @@
 import { spacing } from '@mui/system';
-import { BORDER_RADIUS, FONT_SIZE_MEDIUM } from '../constants';
+
+import { BORDER_RADIUS, FONT_SIZE_MEDIUM } from '@/theme/constants';
+
 import palette from './palette';
 import shadows from './shadows';
 

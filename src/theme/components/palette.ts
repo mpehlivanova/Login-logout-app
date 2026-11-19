@@ -1,15 +1,6 @@
 import { darken, lighten, transparentize } from 'polished';
-import {
-  DARKEN,
-  ERROR,
-  GRAY,
-  INFO,
-  LIGHTEN,
-  PRIMARY,
-  SECONDARY,
-  SUCCESS,
-  WARNING,
-} from '../constants';
+
+import { DARKEN, ERROR, GRAY, INFO, LIGHTEN, PRIMARY, SECONDARY, SUCCESS, WARNING } from '@/theme/constants';
 
 const grey = {
   0: '#FFFFFF',
