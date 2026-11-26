@@ -54,9 +54,9 @@ export default function NavigationBar() {
       </Grid>
       <Grid item xs={12}>
         <MenuList disabledItemsFocusable>
-          {Object.values(routeConfiguration)?.map(({ id, icon, link, showInMenu }: RouteConfigurationType) => {
+          {Object.values(routeConfiguration)?.map(({ id, icon, link, component }: RouteConfigurationType) => {
             const isActivePage = pathname === `/${link}`;
-            if (!showInMenu) return null;
+            if (!component) return null;
             return (
               <Link
                 key={id}

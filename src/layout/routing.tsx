@@ -15,19 +15,21 @@ const Routing = () => {
       <Route path='*' element={<PageNotFound />} />
       <Route path={`/${Pages.login}`} element={<LoginPage />} />
       {Object.values(routeConfiguration)?.length &&
-        Object.values(routeConfiguration)?.map(({ id, link, component, permissions }: any) => (
-          <Route
-            key={id}
-            path={`/${link}`}
-            element={
-              <RequireAuth>
-                <RestrictedAccess permissionsPage={permissions} permissionsUser={permissionsUser}>
-                  {component}
-                </RestrictedAccess>
-              </RequireAuth>
-            }
-          />
-        ))}
+        Object.values(routeConfiguration)
+          .filter((route) => route?.component)
+          .map(({ id, link, component, permissions }: any) => (
+            <Route
+              key={id}
+              path={`/${link}`}
+              element={
+                <RequireAuth>
+                  <RestrictedAccess permissionsPage={permissions} permissionsUser={permissionsUser}>
+                    {component}
+                  </RestrictedAccess>
+                </RequireAuth>
+              }
+            />
+          ))}
     </Routes>
   );
 };
