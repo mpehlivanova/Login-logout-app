@@ -5,6 +5,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { Alert, Button, Dialog, Grid, Typography } from '@mui/material';
 
 import { authManager } from '@/App';
+import { routeConfiguration } from '@/components/navigation/constants';
 import { Pages } from '@/enum';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import { palette } from '@/theme/components';
@@ -40,7 +41,7 @@ const LoginPage = () => {
       <Grid item container p={5}>
         <Grid item>
           <Typography variant='h5'>
-            <b>Sign in to Login logout app</b>
+            <b>{routeConfiguration.login.title}</b>
           </Typography>
         </Grid>
         <Grid xs={12} item display='flex' justifyContent='center' p={5}>

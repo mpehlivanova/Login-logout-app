@@ -1,11 +1,13 @@
 import { Dashboard, People, Person } from '@mui/icons-material';
 import { Button, Grid, ListItemIcon, MenuItem, MenuList, Paper, Typography } from '@mui/material';
 
+import { routeConfiguration } from '@/components/navigation/constants';
+
 const StylePage = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <h1>Style page</h1>{' '}
+        <h1>{routeConfiguration.style.title}</h1>{' '}
       </Grid>
 
       <Grid item xs={12}>

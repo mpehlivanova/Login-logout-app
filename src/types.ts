@@ -11,10 +11,10 @@ export interface User {
 export interface RouteConfigurationType {
   id: Pages;
   link: Pages;
-  permission?: PERMISSIONS[];
+  title: string;
+  permissions?: PERMISSIONS[];
   icon?: React.ReactElement;
   component?: React.ReactElement;
-  showInMenu?: boolean;
 }
 
 export type MethodType = 'POST' | 'GET' | 'DELETE';
